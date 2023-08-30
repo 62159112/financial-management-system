@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver: com.mysql.jdbc.Driver
+    url: jdbc:mysql://175.27.191.217:3306/dcd_financial_system?&useSSL=false
+    username: root
+    password: MLY59420s@
+  thymeleaf:
+    prefix: classpath:/static/
+#  mvc:
+#    static-path-pattern: /**
+#  web:
+#    resources:
+#      upload-path: ./images/
+#      static-locations: classpath:/public/,classpath:/resources/,classpath:/static/,classpath:/META-INF/resources/,file:${upload-path}
+
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tcd_
+server:
+  port: 8094
+
