@@ -43,13 +43,13 @@ public class IncomeUtil {
         Income oldIncome = incomeService.getById(id);
         switch (oldIncome.getType()){
             case "销售出账" -> {
-                BeanUtils.copyProperties(sale, income);
+                BeanUtils.copyProperties(oldIncome, sale);
                 sale.setId(null);
                 sale.setType(null);
-                return saleService.deleteWithIncome(sale) && incomeService.removeById(income);
+                return saleService.deleteWithIncome(sale) && incomeService.removeById(id);
             }
             case "其它" -> {
-                return incomeService.removeById(income);
+                return incomeService.removeById(id);
             }
         }
         return false;

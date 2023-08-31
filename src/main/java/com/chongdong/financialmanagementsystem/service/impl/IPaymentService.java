@@ -21,13 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author cd
-* @description 针对表【tcd_payment(支出条目)】的数据库操作Service实现
-* @createDate 2023-08-04 15:13:59
-*/
+ * @author cd
+ * @description 针对表【tcd_payment(支出条目)】的数据库操作Service实现
+ * @createDate 2023-08-04 15:13:59
+ */
 @Service
 public class IPaymentService extends ServiceImpl<PaymentMapper, Payment>
-    implements PaymentService{
+        implements PaymentService{
     @Resource
     ResponseMapUtil<Payment> responseMapUtil;
     @Resource
@@ -44,7 +44,9 @@ public class IPaymentService extends ServiceImpl<PaymentMapper, Payment>
 
     @Override
     public Boolean updateOtherWithPayment(Payment payment) {
-        return this.update(wrapperUtil.wrapperGetOne(payment.getName(),payment.getCreateTime()));
+        Payment oldPayment = this.getOne(wrapperUtil.wrapperGetOne(payment.getName(), payment.getCreateTime()));
+        oldPayment.setAmount(payment.getAmount());
+        return this.updateById(oldPayment);
     }
 
     @Override

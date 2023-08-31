@@ -22,13 +22,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author cd
-* @description 针对表【tcd_purchase(购置条目)】的数据库操作Service实现
-* @createDate 2023-08-03 15:36:58
-*/
+ * @author cd
+ * @description 针对表【tcd_purchase(购置条目)】的数据库操作Service实现
+ * @createDate 2023-08-03 15:36:58
+ */
 @Service
 public class IPurchaseService extends ServiceImpl<PurchaseMapper, Purchase>
-    implements PurchaseService{
+        implements PurchaseService{
     @Resource
     PageUtil<Purchase> pageUtil;
     @Resource
@@ -52,7 +52,7 @@ public class IPurchaseService extends ServiceImpl<PurchaseMapper, Purchase>
         BeanUtils.copyProperties(purchase,inventory);
         inventory.setTotal(purchase.getQuantity());
         return responseMapUtil.addEntity(this.save(purchase) && paymentService.addOtherWithPayment(payment)
-        && inventoryService.addOtherWithInventory(inventory));
+                && inventoryService.addOtherWithInventory(inventory));
     }
 
     @Override
@@ -61,11 +61,11 @@ public class IPurchaseService extends ServiceImpl<PurchaseMapper, Purchase>
         Purchase oldPurchase = this.getById(purchase.getId());
         BeanUtils.copyProperties(purchase,payment);
         payment.setId(null);
-        payment.setType(null);
+        payment.setType("购置成本");
         BeanUtils.copyProperties(purchase,inventory);
         inventory.setTotal(purchase.getQuantity() - oldPurchase.getQuantity());
         return responseMapUtil.updateEntity(this.updateById(purchase) && paymentService.updateOtherWithPayment(payment)
-        && inventoryService.UpdateOtherWithInventory(inventory));
+                && inventoryService.UpdateOtherWithInventory(inventory));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class IPurchaseService extends ServiceImpl<PurchaseMapper, Purchase>
         BeanUtils.copyProperties(purchase,inventory);
         inventory.setTotal(purchase.getQuantity());
         return responseMapUtil.deleteEntity(this.removeById(id) && paymentService.deleteOtherWithPayment(payment)
-        && inventoryService.deleteOtherWithInventory(inventory));
+                && inventoryService.deleteOtherWithInventory(inventory));
     }
 
     @Override

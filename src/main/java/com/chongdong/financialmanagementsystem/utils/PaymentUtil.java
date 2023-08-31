@@ -37,37 +37,37 @@ public class PaymentUtil {
         Payment oldPayment = paymentService.getById(payment.getId());
         switch (oldPayment.getType()){
             case "费用成本" -> {
-                BeanUtils.copyProperties(expenses, payment);
+                BeanUtils.copyProperties(payment, expenses);
                 expenses.setId(null);
                 expenses.setType(null);
                 return expensesService.updateWithPayment(expenses) && paymentService.updateById(payment);
             }
             case "人工成本" -> {
-                BeanUtils.copyProperties(labor, payment);
+                BeanUtils.copyProperties(payment, labor);
                 labor.setId(null);
                 labor.setType(null);
                 return laborService.updateWithPayment(labor) && paymentService.updateById(payment);
             }
             case "运营成本" -> {
-                BeanUtils.copyProperties(operate, payment);
+                BeanUtils.copyProperties(payment, operate);
                 operate.setId(null);
                 operate.setType(null);
                 return operateService.updateWithPayment(operate) && paymentService.updateById(payment);
             }
             case "采购成本" -> {
-                BeanUtils.copyProperties(procurement, payment);
+                BeanUtils.copyProperties(payment, procurement);
                 procurement.setId(null);
                 procurement.setType(null);
                 return procurementService.updateWithPayment(procurement) && paymentService.updateById(payment);
             }
             case "购置成本" -> {
-                BeanUtils.copyProperties(purchase, payment);
+                BeanUtils.copyProperties(payment, purchase);
                 purchase.setId(null);
                 purchase.setType(null);
                 return purchaseService.updateWithPayment(purchase) && paymentService.updateById(payment);
             }
             case "报销成本" -> {
-                BeanUtils.copyProperties(reimbursement, payment);
+                BeanUtils.copyProperties(payment, reimbursement);
                 reimbursement.setId(null);
                 reimbursement.setType(null);
                 return reimbursementService.updateWithPayment(reimbursement) && paymentService.updateById(payment);

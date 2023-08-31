@@ -26,7 +26,10 @@ public class IncomeController {
     public ResponseMap listIncome(@PathVariable Integer page, @PathVariable Integer size){
         return incomeService.listIncome(page,size);
     }
-
+    @PostMapping
+    public ResponseMap addIncome(@RequestBody Income income){
+        return incomeService.addIncome(income);
+    }
     @PostMapping("/search")
     public ResponseMap searchIncome(@RequestBody SearchModel searchModel){
         return incomeService.searchIncome(searchModel);

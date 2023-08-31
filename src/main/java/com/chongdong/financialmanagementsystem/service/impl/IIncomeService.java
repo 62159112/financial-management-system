@@ -13,17 +13,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
-* @author cd
-* @description 针对表【tcd_income(收入条目)】的数据库操作Service实现
-* @createDate 2023-08-03 14:41:11
-*/
+ * @author cd
+ * @description 针对表【tcd_income(收入条目)】的数据库操作Service实现
+ * @createDate 2023-08-03 14:41:11
+ */
 @Service
 public class IIncomeService extends ServiceImpl<IncomeMapper, Income>
-    implements IncomeService{
+        implements IncomeService{
     @Resource
     ResponseMapUtil<Income> responseMapUtil;
     @Resource
@@ -49,6 +50,7 @@ public class IIncomeService extends ServiceImpl<IncomeMapper, Income>
     //TODO 修改删除根据类型找到相应service（若为其它则不管）  使用事务同时删除
     @Override
     public ResponseMap addIncome(Income income) {
+        income.setCreateTime(new Date());
         return responseMapUtil.addEntity(this.save(income));
     }
 
