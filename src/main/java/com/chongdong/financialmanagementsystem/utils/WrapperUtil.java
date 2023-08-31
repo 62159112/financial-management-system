@@ -67,6 +67,18 @@ public class WrapperUtil<T> {
         return wrapper;
     }
 
+    public QueryWrapper<T> wrapperNormal33(String search, String startTime, String endTime) {
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        if (StringUtils.hasLength(startTime) && StringUtils.hasLength(endTime)){
+            LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            wrapper.between("create_time", start, end);
+        }
+        wrapper.eq(StringUtils.hasLength(search), "article", search);
+        wrapper.orderByDesc("create_time");
+        return wrapper;
+    }
+
 
 
 

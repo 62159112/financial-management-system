@@ -13,4 +13,6 @@ import com.chongdong.financialmanagementsystem.model.SearchModel;
 public interface InventoryUsageService extends IService<InventoryUsage> {
 
     ResponseMap searchInventoryUsage(SearchModel searchModel);
+
+    ResponseMap oneInventoryUsageList(SearchModel searchModel);
 }

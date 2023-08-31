@@ -58,9 +58,15 @@ public class InventoryController {
     }
 
     //库存使用详情模糊查询
-    @PostMapping("/inventoryUsageSearch")
+    @GetMapping("/inventoryUsageSearch")
     public ResponseMap searchInventoryUsage(@RequestBody SearchModel searchModel){
         return inventoryUsageService.searchInventoryUsage(searchModel);
+    }
+
+    //库存物品使用情况详情
+    @GetMapping("/oneInventoryUsage")
+    public ResponseMap oneInventoryUsageList(@RequestBody SearchModel searchModel){
+        return inventoryUsageService.oneInventoryUsageList(searchModel);
     }
 
 

@@ -44,6 +44,20 @@ public class IInventoryUsageService extends ServiceImpl<InventoryUsageMapper, In
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
+
+    @Override
+    public ResponseMap oneInventoryUsageList(SearchModel searchModel) {
+        if (searchModel.getSearch()==null || searchModel.getSearch().equals("")){
+            responseMap.setMessage("参数不能为空！！！");
+            responseMap.setData(false);
+            responseMap.setFlag(false);
+            return responseMap;
+        }
+        Page<InventoryUsage> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperNormal33(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+        Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
+        return responseMapUtil.getPageList(pageList,modelMap);
+    }
 }
 
 
