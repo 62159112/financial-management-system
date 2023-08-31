@@ -2,10 +2,8 @@ package com.chongdong.financialmanagementsystem.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.chongdong.financialmanagementsystem.model.Inventory;
-import com.chongdong.financialmanagementsystem.model.Labor;
-import com.chongdong.financialmanagementsystem.model.ResponseMap;
-import com.chongdong.financialmanagementsystem.model.SearchModel;
+import com.chongdong.financialmanagementsystem.mapper.InventoryUsageMapper;
+import com.chongdong.financialmanagementsystem.model.*;
 import com.chongdong.financialmanagementsystem.service.InventoryService;
 import com.chongdong.financialmanagementsystem.mapper.InventoryMapper;
 import com.chongdong.financialmanagementsystem.utils.PageUtil;
@@ -14,6 +12,7 @@ import com.chongdong.financialmanagementsystem.utils.WrapperUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -25,30 +24,74 @@ import java.util.Map;
 public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
     implements InventoryService{
     @Resource
+    InventoryMapper inventoryMapper;
+    @Resource
     PageUtil<Inventory> pageUtil;
     @Resource
     WrapperUtil<Inventory> wrapperUtil;
     @Resource
     ResponseMapUtil<Inventory> responseMapUtil;
+    ResponseMap responseMap=new ResponseMap();
 
     @Override
     public ResponseMap addInventory(Inventory inventory) {
-        return null;
+        if (inventory.getName()!=null && inventory.getDirector()!=null){
+            inventory.setUpdateTime(new Date());
+            inventory.setUsedQuantity(0);
+            inventoryMapper.insert(inventory);
+            responseMap.setFlag(true);
+            responseMap.setData(inventory);
+            responseMap.setMessage("添加成功");
+        }else {
+            responseMap.setFlag(false);
+            responseMap.setData(inventory);
+            responseMap.setMessage("添加失败，请检查参数是否正确");
+        }
+        return responseMap;
     }
 
     @Override
     public ResponseMap updateInventory(Inventory inventory) {
-        return null;
+        inventory.setUpdateTime(new Date());
+        if (inventoryMapper.updateById(inventory)>0){
+            responseMap.setFlag(true);
+            responseMap.setData(inventory);
+            responseMap.setMessage("修改成功");
+        }else {
+            responseMap.setFlag(false);
+            responseMap.setData(false);
+            responseMap.setMessage("修改失败，请检查参数是否正确");
+        }
+        return responseMap;
     }
 
     @Override
     public ResponseMap deleteInventory(Integer id) {
-        return null;
+        if (inventoryMapper.deleteById(id)>0){
+            responseMap.setFlag(true);
+            responseMap.setData(true);
+            responseMap.setMessage("删除成功");
+        }else {
+            responseMap.setFlag(false);
+            responseMap.setData(false);
+            responseMap.setMessage("删除失败，请检查参数是否正确");
+        }
+        return responseMap;
     }
 
     @Override
     public ResponseMap getInventory(Integer id) {
-        return null;
+        if (id!=null){
+            Inventory inventory = inventoryMapper.selectById(id);
+            responseMap.setFlag(true);
+            responseMap.setData(inventory);
+            responseMap.setMessage("查询成功");
+        }else {
+            responseMap.setFlag(false);
+            responseMap.setData(null);
+            responseMap.setMessage("查询失败");
+        }
+        return responseMap;
     }
 
     @Override
@@ -61,7 +104,7 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
     @Override
     public ResponseMap searchInventory(SearchModel searchModel) {
         Page<Inventory> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-        wrapperUtil.wrapperNormal(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+        wrapperUtil.wrapperNormal11(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -90,6 +133,7 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
         oldInventory.setTotal(oldInventory.getTotal() - inventory.getTotal());
         return this.updateById(oldInventory);
     }
+
 }
 
 

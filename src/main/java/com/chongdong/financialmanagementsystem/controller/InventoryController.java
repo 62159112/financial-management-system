@@ -15,27 +15,29 @@ public class InventoryController {
     @Resource
     InventoryService inventoryService;
 
-
+    //id查询
     @GetMapping("/{id}")
     public ResponseMap getInventory(@PathVariable Integer id){
         return inventoryService.getInventory(id);
     }
 
-    /*@PostMapping
+    //添加
+    @PostMapping("/add")
     public ResponseMap addInventory(@RequestBody Inventory inventory){
         return inventoryService.addInventory(inventory);
-    }*/
+    }
 
+    //修改
     @PutMapping
     public ResponseMap updateInventory(@RequestBody Inventory inventory){
         return inventoryService.updateInventory(inventory);
     }
 
+    //删除
     @DeleteMapping("/{id}")
     public ResponseMap deleteInventory(@PathVariable Integer id){
         return inventoryService.deleteInventory(id);
     }
-
 
 
     @GetMapping("/list/{page}/{size}")
