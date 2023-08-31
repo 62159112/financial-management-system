@@ -30,4 +30,6 @@ public interface InventoryService extends IService<Inventory> {
     Boolean UpdateOtherWithInventory(Inventory inventory);
 
     Boolean deleteOtherWithInventory(Inventory inventory);
+
+    ResponseMap Outbound(Integer id, Integer quantity,String user,String remark);
 }

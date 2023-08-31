@@ -26,6 +26,8 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
     @Resource
     InventoryMapper inventoryMapper;
     @Resource
+    InventoryUsageMapper inventoryUsageMapper;
+    @Resource
     PageUtil<Inventory> pageUtil;
     @Resource
     WrapperUtil<Inventory> wrapperUtil;
@@ -132,6 +134,37 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
         Inventory oldInventory = this.getOne(wrapperUtil.wrapperName(inventory.getName()));
         oldInventory.setTotal(oldInventory.getTotal() - inventory.getTotal());
         return this.updateById(oldInventory);
+    }
+
+    @Override
+    public ResponseMap Outbound(Integer id, Integer quantity,String user,String remark) {
+        if (id > 0 && quantity > 0){
+            Inventory inventory = inventoryMapper.selectById(id);
+            if (inventory.getTotal()<quantity){
+                responseMap.setFlag(false);
+                responseMap.setData(false);
+                responseMap.setMessage("出库失败，没有这么多库存，请检查数量是否正确！！！");
+            }else {
+                inventory.setTotal(inventory.getTotal()-quantity);
+                inventory.setUsedQuantity(inventory.getUsedQuantity()+quantity);
+                InventoryUsage inventoryUsage=new InventoryUsage();
+                inventoryUsage.setArticle(inventory.getName());
+                inventoryUsage.setUser(user);
+                inventoryUsage.setCreateTime(new Date());
+                inventoryUsage.setQuantity(quantity);
+                inventoryUsage.setRemark(remark);
+                if (inventoryMapper.updateById(inventory)>0 && inventoryUsageMapper.insert(inventoryUsage)>0){
+                    responseMap.setFlag(true);
+                    responseMap.setData(true);
+                    responseMap.setMessage("出库成功！！！");
+                }else {
+                    responseMap.setFlag(false);
+                    responseMap.setData(false);
+                    responseMap.setMessage("出库失败，请检查参数是否正确或稍后重试！！！");
+                }
+            }
+        }
+        return responseMap;
     }
 
 }
