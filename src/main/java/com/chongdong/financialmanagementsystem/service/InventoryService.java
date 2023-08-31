@@ -1,10 +1,7 @@
 package com.chongdong.financialmanagementsystem.service;
 
-import com.chongdong.financialmanagementsystem.model.Inventory;
+import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.chongdong.financialmanagementsystem.model.Labor;
-import com.chongdong.financialmanagementsystem.model.ResponseMap;
-import com.chongdong.financialmanagementsystem.model.SearchModel;
 
 /**
 * @author cd
@@ -31,5 +28,5 @@ public interface InventoryService extends IService<Inventory> {
 
     Boolean deleteOtherWithInventory(Inventory inventory);
 
-    ResponseMap Outbound(Integer id, Integer quantity,String user,String remark);
+    ResponseMap Outbound(Outbound outbound);
 }

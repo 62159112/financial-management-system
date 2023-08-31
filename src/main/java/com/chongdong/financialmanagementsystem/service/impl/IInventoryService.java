@@ -137,22 +137,22 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
     }
 
     @Override
-    public ResponseMap Outbound(Integer id, Integer quantity,String user,String remark) {
-        if (id > 0 && quantity > 0){
-            Inventory inventory = inventoryMapper.selectById(id);
-            if (inventory.getTotal()<quantity){
+    public ResponseMap Outbound(Outbound outbound) {
+        if (outbound.getId() > 0 && outbound.getQuantity() > 0){
+            Inventory inventory = inventoryMapper.selectById(outbound.getId());
+            if (inventory.getTotal()<outbound.getQuantity()){
                 responseMap.setFlag(false);
                 responseMap.setData(false);
                 responseMap.setMessage("出库失败，没有这么多库存，请检查数量是否正确！！！");
             }else {
-                inventory.setTotal(inventory.getTotal()-quantity);
-                inventory.setUsedQuantity(inventory.getUsedQuantity()+quantity);
+                inventory.setTotal(inventory.getTotal()-outbound.getQuantity());
+                inventory.setUsedQuantity(inventory.getUsedQuantity()+outbound.getQuantity());
                 InventoryUsage inventoryUsage=new InventoryUsage();
                 inventoryUsage.setArticle(inventory.getName());
-                inventoryUsage.setUser(user);
+                inventoryUsage.setUser(outbound.getUser());
                 inventoryUsage.setCreateTime(new Date());
-                inventoryUsage.setQuantity(quantity);
-                inventoryUsage.setRemark(remark);
+                inventoryUsage.setQuantity(outbound.getQuantity());
+                inventoryUsage.setRemark(outbound.getRemark());
                 if (inventoryMapper.updateById(inventory)>0 && inventoryUsageMapper.insert(inventoryUsage)>0){
                     responseMap.setFlag(true);
                     responseMap.setData(true);

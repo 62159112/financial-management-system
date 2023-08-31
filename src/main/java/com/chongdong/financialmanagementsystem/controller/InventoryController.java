@@ -1,10 +1,7 @@
 package com.chongdong.financialmanagementsystem.controller;
 
 
-import com.chongdong.financialmanagementsystem.model.Inventory;
-import com.chongdong.financialmanagementsystem.model.Labor;
-import com.chongdong.financialmanagementsystem.model.ResponseMap;
-import com.chongdong.financialmanagementsystem.model.SearchModel;
+import com.chongdong.financialmanagementsystem.model.*;
 import com.chongdong.financialmanagementsystem.service.InventoryService;
 import com.chongdong.financialmanagementsystem.service.InventoryUsageService;
 import jakarta.annotation.Resource;
@@ -55,9 +52,9 @@ public class InventoryController {
 
 
     //出库操作:  库存id，使用数量
-    @GetMapping("/Outbound/{id}/{quantity}/{user}/{remark}")
-    public ResponseMap InventoryOutbound(@PathVariable Integer id, @PathVariable Integer quantity, @PathVariable String user,@PathVariable String remark){
-        return inventoryService.Outbound(id,quantity,user,remark);
+    @GetMapping("/Outbound")
+    public ResponseMap InventoryOutbound(@RequestBody Outbound outbound){
+        return inventoryService.Outbound(outbound);
     }
 
     //库存使用详情模糊查询
