@@ -74,7 +74,25 @@ public class WrapperUtil<T> {
             LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             wrapper.between("create_time", start, end);
         }
-        wrapper.eq(StringUtils.hasLength(search), "article", search);
+        wrapper.eq(StringUtils.hasLength(search), "article", search)
+                .or().like(StringUtils.hasLength(search), "user", search)
+                .or().like(StringUtils.hasLength(search), "remark", search)
+                .or().like(StringUtils.hasLength(search), "quantity", search);
+        wrapper.orderByDesc("create_time");
+        return wrapper;
+    }
+
+    public QueryWrapper<T> wrapperNormal44(String search, String startTime, String endTime) {
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        if (StringUtils.hasLength(startTime) && StringUtils.hasLength(endTime)){
+            LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            wrapper.between("create_time", start, end);
+        }
+        wrapper.like(StringUtils.hasLength(search), "article", search)
+                .or().like(StringUtils.hasLength(search), "user", search)
+                .or().like(StringUtils.hasLength(search), "remark", search)
+                .or().like(StringUtils.hasLength(search), "quantity", search);
         wrapper.orderByDesc("create_time");
         return wrapper;
     }

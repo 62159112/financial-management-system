@@ -15,4 +15,6 @@ public interface InventoryUsageService extends IService<InventoryUsage> {
     ResponseMap searchInventoryUsage(SearchModel searchModel);
 
     ResponseMap oneInventoryUsageList(SearchModel searchModel);
+
+    ResponseMap searchOneInventoryUsageList(SearchModel searchModel);
 }

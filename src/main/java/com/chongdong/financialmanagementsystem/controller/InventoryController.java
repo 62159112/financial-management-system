@@ -69,5 +69,11 @@ public class InventoryController {
         return inventoryUsageService.oneInventoryUsageList(searchModel);
     }
 
+    //库存使用情况模糊查询
+    @GetMapping("/searchOneInventoryUsage")
+    public ResponseMap searchOneInventoryUsageList(@RequestBody SearchModel searchModel){
+        return inventoryUsageService.searchOneInventoryUsageList(searchModel);
+    }
+
 
 }
