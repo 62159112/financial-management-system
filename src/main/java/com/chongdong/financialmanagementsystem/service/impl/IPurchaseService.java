@@ -88,7 +88,7 @@ public class IPurchaseService extends ServiceImpl<PurchaseMapper, Purchase>
 
     @Override
     public ResponseMap listPurchase(Integer page, Integer size) {
-        Page<Purchase> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Purchase> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

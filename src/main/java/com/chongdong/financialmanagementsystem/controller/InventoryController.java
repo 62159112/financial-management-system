@@ -52,25 +52,25 @@ public class InventoryController {
 
 
     //出库操作:  库存id，使用数量
-    @GetMapping("/Outbound")
+    @PostMapping("/Outbound")
     public ResponseMap InventoryOutbound(@RequestBody Outbound outbound){
         return inventoryService.Outbound(outbound);
     }
 
     //库存使用详情模糊查询
-    @GetMapping("/inventoryUsageSearch")
+    @PostMapping("/inventoryUsageSearch")
     public ResponseMap searchInventoryUsage(@RequestBody SearchModel searchModel){
         return inventoryUsageService.searchInventoryUsage(searchModel);
     }
 
     //库存物品使用情况详情
-    @GetMapping("/oneInventoryUsage")
+    @PostMapping("/oneInventoryUsage")
     public ResponseMap oneInventoryUsageList(@RequestBody SearchModel searchModel){
         return inventoryUsageService.oneInventoryUsageList(searchModel);
     }
 
     //库存使用情况模糊查询
-    @GetMapping("/searchOneInventoryUsage")
+    @PostMapping("/searchOneInventoryUsage")
     public ResponseMap searchOneInventoryUsageList(@RequestBody SearchModel searchModel){
         return inventoryUsageService.searchOneInventoryUsageList(searchModel);
     }

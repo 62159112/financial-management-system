@@ -98,7 +98,7 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
 
     @Override
     public ResponseMap listInventory(Integer page, Integer size) {
-        Page<Inventory> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Inventory> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

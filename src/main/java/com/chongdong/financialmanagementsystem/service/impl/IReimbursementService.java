@@ -74,7 +74,7 @@ public class IReimbursementService extends ServiceImpl<ReimbursementMapper, Reim
 
     @Override
     public ResponseMap listReimbursement(Integer page, Integer size) {
-        Page<Reimbursement> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Reimbursement> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

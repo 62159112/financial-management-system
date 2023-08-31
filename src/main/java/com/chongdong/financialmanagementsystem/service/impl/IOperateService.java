@@ -74,7 +74,7 @@ public class  IOperateService extends ServiceImpl<OperateMapper, Operate>
 
     @Override
     public ResponseMap listOperate(Integer page, Integer size) {
-        Page<Operate> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Operate> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

@@ -75,7 +75,7 @@ public class ISaleService extends ServiceImpl<SaleMapper, Sale>
 
     @Override
     public ResponseMap listSale(Integer page, Integer size) {
-        Page<Sale> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Sale> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

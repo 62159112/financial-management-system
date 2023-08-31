@@ -88,7 +88,7 @@ public class IProcurementService extends ServiceImpl<ProcurementMapper, Procurem
 
     @Override
     public ResponseMap listProcurement(Integer page, Integer size) {
-        Page<Procurement> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Procurement> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

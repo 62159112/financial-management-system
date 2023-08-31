@@ -74,7 +74,7 @@ public class IExpensesService extends ServiceImpl<ExpensesMapper, Expenses>
 
     @Override
     public ResponseMap listExpenses(Integer page, Integer size) {
-        Page<Expenses> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Expenses> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

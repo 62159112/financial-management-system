@@ -73,7 +73,7 @@ public class IIncomeService extends ServiceImpl<IncomeMapper, Income>
 
     @Override
     public ResponseMap listIncome(Integer page, Integer size) {
-        Page<Income> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Income> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

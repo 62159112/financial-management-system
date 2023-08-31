@@ -74,7 +74,7 @@ public class ILaborService extends ServiceImpl<LaborMapper, Labor>
 
     @Override
     public ResponseMap listLabor(Integer page, Integer size) {
-        Page<Labor> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Labor> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

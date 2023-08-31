@@ -80,7 +80,7 @@ public class IPaymentService extends ServiceImpl<PaymentMapper, Payment>
 
     @Override
     public ResponseMap listPayment(Integer page, Integer size) {
-        Page<Payment> pageList = pageUtil.getPageList(this.getBaseMapper(),pageUtil.getModelPage(page, size));
+        Page<Payment> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
