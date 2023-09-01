@@ -82,8 +82,9 @@ public class ISaleService extends ServiceImpl<SaleMapper, Sale>
 
     @Override
     public ResponseMap searchSale(SearchModel searchModel) {
-        Page<Sale> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperSale(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Sale> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Sale> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

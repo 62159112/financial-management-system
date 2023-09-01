@@ -80,8 +80,9 @@ public class IIncomeService extends ServiceImpl<IncomeMapper, Income>
 
     @Override
     public ResponseMap searchIncome(SearchModel searchModel) {
-        Page<Income> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperNormal(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Income> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Income> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

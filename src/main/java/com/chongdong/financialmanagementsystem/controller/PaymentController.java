@@ -1,12 +1,24 @@
 package com.chongdong.financialmanagementsystem.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.chongdong.financialmanagementsystem.model.Payment;
 import com.chongdong.financialmanagementsystem.model.ResponseMap;
 import com.chongdong.financialmanagementsystem.model.SearchModel;
 import com.chongdong.financialmanagementsystem.service.PaymentService;
+import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import com.chongdong.financialmanagementsystem.utils.PaymentUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
+
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/payment")
@@ -47,5 +59,15 @@ public class PaymentController {
     @GetMapping("/count")
     public ResponseMap countPayment(){
         return paymentService.countPayment();
+    }
+
+    @GetMapping("/export")
+    @ResponseBody
+    public void exportExcel(HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"支出列表");
+        ServletOutputStream outputStream = response.getOutputStream();
+        ExcelWriter writer = EasyExcel.write(response.getOutputStream()).build();
+        WriteSheet sheet = EasyExcel.writerSheet(0, "sheet").head(Payment.class).build();
+        EasyExcel.write(outputStream).head(Payment.class).excelType(ExcelTypeEnum.XLSX).sheet("用户列表").doWrite(paymentService.exportList(1,10));
     }
 }

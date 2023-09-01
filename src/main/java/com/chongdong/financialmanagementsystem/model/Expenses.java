@@ -1,6 +1,5 @@
 package com.chongdong.financialmanagementsystem.model;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -28,7 +27,6 @@ public class Expenses implements Serializable {
     /**
      * 费用支出条目名称
      */
-    @Excel(name = "支出名称",width = 18,orderNum = "1")
     private String name;
 
     /**

@@ -87,8 +87,9 @@ public class IPaymentService extends ServiceImpl<PaymentMapper, Payment>
 
     @Override
     public ResponseMap searchPayment(SearchModel searchModel) {
-        Page<Payment> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperNormal(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Payment> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Payment> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -101,6 +102,11 @@ public class IPaymentService extends ServiceImpl<PaymentMapper, Payment>
             count = count.add(payment.getAmount());
         }
         return responseMapUtil.countList(count);
+    }
+
+    @Override
+    public List<Payment> exportList(Integer page,Integer size) {
+        return this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc()).getRecords();
     }
 }
 

@@ -95,8 +95,9 @@ public class IProcurementService extends ServiceImpl<ProcurementMapper, Procurem
 
     @Override
     public ResponseMap searchProcurement(SearchModel searchModel) {
-        Page<Procurement> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperProcurement(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Procurement> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Procurement> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

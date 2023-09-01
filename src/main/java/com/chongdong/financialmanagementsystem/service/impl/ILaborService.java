@@ -81,8 +81,9 @@ public class ILaborService extends ServiceImpl<LaborMapper, Labor>
 
     @Override
     public ResponseMap searchLabor(SearchModel searchModel) {
-        Page<Labor> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperNormal(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Labor> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Labor> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

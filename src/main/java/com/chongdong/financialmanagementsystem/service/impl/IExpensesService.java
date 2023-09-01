@@ -81,8 +81,9 @@ public class IExpensesService extends ServiceImpl<ExpensesMapper, Expenses>
 
     @Override
     public ResponseMap searchExpenses(SearchModel searchModel) {
-        Page<Expenses> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperExpenses(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Expenses> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Expenses> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

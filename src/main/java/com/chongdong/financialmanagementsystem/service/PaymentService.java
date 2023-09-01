@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.chongdong.financialmanagementsystem.model.ResponseMap;
 import com.chongdong.financialmanagementsystem.model.SearchModel;
 
+import java.util.List;
+
 /**
 * @author cd
 * @description 针对表【tcd_payment(支出条目)】的数据库操作Service
@@ -31,4 +33,6 @@ public interface PaymentService extends IService<Payment> {
     ResponseMap searchPayment(SearchModel searchModel);
 
     ResponseMap countPayment();
+
+    List<Payment> exportList(Integer page,Integer size);
 }

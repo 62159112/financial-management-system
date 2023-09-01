@@ -18,6 +18,9 @@ mybatis-plus:
   global-config:
     db-config:
       table-prefix: tcd_
+#   plus sql语句打印
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8094
 

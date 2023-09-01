@@ -23,19 +23,36 @@ public class WrapperUtil<T> {
      * */
     public QueryWrapper<T> wrapperNormal(String search, String startTime, String endTime) {
         QueryWrapper<T> wrapper = new QueryWrapper<>();
-        if (StringUtils.hasLength(startTime) && StringUtils.hasLength(endTime)){
-            LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            wrapper.between("create_time", start, end);
-        }
+        wrapper.apply("UNIX_TIMESTAMP(create_time) >= UNIX_TIMESTAMP('" +startTime  + "')");
+        wrapper.apply("UNIX_TIMESTAMP(create_time) <= UNIX_TIMESTAMP('" +endTime  + "')");
         wrapper.like(StringUtils.hasLength(search), "name", search)
                 .or().like(StringUtils.hasLength(search), "type", search)
                 .or().like(StringUtils.hasLength(search), "amount", search)
                 .or().like(StringUtils.hasLength(search), "director", search);
+        if (StringUtils.hasLength(startTime) && StringUtils.hasLength(endTime)){
+            LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        }
         wrapper.orderByDesc("create_time");
         return wrapper;
     }
-
+    public QueryWrapper<T> wrapperLike(String search){
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        wrapper.like(StringUtils.hasLength(search), "name", search)
+                .or().like(StringUtils.hasLength(search), "type", search)
+                .or().like(StringUtils.hasLength(search), "amount", search)
+                .or().like(StringUtils.hasLength(search), "director", search);
+        return wrapper;
+    }
+    public QueryWrapper<T> wrapperTimeSlot( String startTime, String endTime){
+        String start = startTime.contains("/") ? startTime.replaceAll("/", "-") : startTime;
+        String end = endTime.contains("/") ? endTime.replaceAll("/", "-") : endTime;
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        wrapper.apply("UNIX_TIMESTAMP(create_time) >= UNIX_TIMESTAMP('" + start + "')");
+        wrapper.apply("UNIX_TIMESTAMP(create_time) <= UNIX_TIMESTAMP('" + end + "')");
+        wrapper.orderByDesc("create_time");
+        return wrapper;
+    }
     public QueryWrapper<T> wrapperNormal11(String search, String startTime, String endTime) {
         QueryWrapper<T> wrapper = new QueryWrapper<>();
         if (StringUtils.hasLength(startTime) && StringUtils.hasLength(endTime)){
