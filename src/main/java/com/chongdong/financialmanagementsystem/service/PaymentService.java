@@ -28,11 +28,13 @@ public interface PaymentService extends IService<Payment> {
 
     ResponseMap getPayment(Integer id);
 
-    ResponseMap listPayment(Integer page,Integer size);
+    ResponseMap listPayment(Integer page, Integer size);
 
     ResponseMap searchPayment(SearchModel searchModel);
 
     ResponseMap countPayment();
 
-    List<Payment> exportList(Integer page,Integer size);
+    List<Payment> exportList(Integer page, Integer size);
+
+    List<Payment> searchList(SearchModel searchModel);
 }

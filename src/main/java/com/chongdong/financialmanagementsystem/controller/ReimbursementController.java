@@ -1,11 +1,17 @@
 package com.chongdong.financialmanagementsystem.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.chongdong.financialmanagementsystem.model.Purchase;
 import com.chongdong.financialmanagementsystem.model.Reimbursement;
 import com.chongdong.financialmanagementsystem.model.ResponseMap;
 import com.chongdong.financialmanagementsystem.model.SearchModel;
 import com.chongdong.financialmanagementsystem.service.ReimbursementService;
+import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/reimbursement")
@@ -45,5 +51,17 @@ public class ReimbursementController {
     @GetMapping("/count")
     public ResponseMap countReimbursement(){
         return reimbursementService.countReimbursement();
+    }
+
+    @GetMapping("/download/{page}/{size}")
+    public void download(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"报销列表");
+        EasyExcel.write(response.getOutputStream(), Reimbursement.class).sheet("报销列表").doWrite(reimbursementService.exportList(page, size));
+    }
+
+    @PostMapping("/search/download")
+    public void downloadSearch(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
+        ExcelUtil.setExcelHeader(response,"报销列表");
+        EasyExcel.write(response.getOutputStream(), Reimbursement.class).sheet("报销列表").doWrite(reimbursementService.searchList(searchModel));
     }
 }

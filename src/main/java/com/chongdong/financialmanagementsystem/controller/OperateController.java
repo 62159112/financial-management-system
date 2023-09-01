@@ -1,12 +1,14 @@
 package com.chongdong.financialmanagementsystem.controller;
 
-import com.chongdong.financialmanagementsystem.model.Expenses;
-import com.chongdong.financialmanagementsystem.model.Operate;
-import com.chongdong.financialmanagementsystem.model.ResponseMap;
-import com.chongdong.financialmanagementsystem.model.SearchModel;
+import com.alibaba.excel.EasyExcel;
+import com.chongdong.financialmanagementsystem.model.*;
 import com.chongdong.financialmanagementsystem.service.OperateService;
+import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/operate")
@@ -47,5 +49,17 @@ public class OperateController {
     @GetMapping("/count")
     public ResponseMap countOperate(){
         return operateService.countOperate();
+    }
+
+    @GetMapping("/download/{page}/{size}")
+    public void download(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"运营成本列表");
+        EasyExcel.write(response.getOutputStream(), Operate.class).sheet("运营成本列表").doWrite(operateService.exportList(page, size));
+    }
+
+    @PostMapping("/search/download")
+    public void downloadSearch(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
+        ExcelUtil.setExcelHeader(response,"运营成本列表");
+        EasyExcel.write(response.getOutputStream(), Operate.class).sheet("运营成本列表").doWrite(operateService.searchList(searchModel));
     }
 }

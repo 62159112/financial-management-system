@@ -80,9 +80,7 @@ public class IIncomeService extends ServiceImpl<IncomeMapper, Income>
 
     @Override
     public ResponseMap searchIncome(SearchModel searchModel) {
-        Page<Income> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperLike(searchModel.getSearch()));
-        Page<Income> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Income> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -95,6 +93,19 @@ public class IIncomeService extends ServiceImpl<IncomeMapper, Income>
             count = count.add(income.getAmount());
         }
         return responseMapUtil.countList(count);
+    }
+
+    @Override
+    public List<Income> exportList(Integer page, Integer size) {
+        return this.page(pageUtil.getModelPage(page, size)).getRecords();
+    }
+
+    @Override
+    public List<Income> searchList(SearchModel searchModel) {
+        Page<Income> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Income> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        return pageList.getRecords();
     }
 }
 

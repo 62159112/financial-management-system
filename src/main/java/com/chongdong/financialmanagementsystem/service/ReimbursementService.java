@@ -3,6 +3,8 @@ package com.chongdong.financialmanagementsystem.service;
 import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author cd
 * @description 针对表【tcd_reimbursement(报销条目)】的数据库操作Service
@@ -26,4 +28,8 @@ public interface ReimbursementService extends IService<Reimbursement> {
     Boolean deleteWithPayment(Reimbursement reimbursement);
 
     ResponseMap countReimbursement();
+
+    List<Reimbursement> exportList(Integer page, Integer size);
+
+    List<Reimbursement> searchList(SearchModel searchModel);
 }

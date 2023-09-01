@@ -3,6 +3,8 @@ package com.chongdong.financialmanagementsystem.service;
 import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author cd
 * @description 针对表【tcd_purchase(购置条目)】的数据库操作Service
@@ -26,4 +28,8 @@ public interface PurchaseService extends IService<Purchase> {
     Boolean deleteWithPayment(Purchase purchase);
 
     ResponseMap countPurchase();
+
+    List<Purchase> exportList(Integer page, Integer size);
+
+    List<Purchase> searchList(SearchModel searchModel);
 }

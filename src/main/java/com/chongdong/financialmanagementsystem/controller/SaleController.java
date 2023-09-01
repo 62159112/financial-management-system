@@ -1,11 +1,17 @@
 package com.chongdong.financialmanagementsystem.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.chongdong.financialmanagementsystem.model.Reimbursement;
 import com.chongdong.financialmanagementsystem.model.Sale;
 import com.chongdong.financialmanagementsystem.model.ResponseMap;
 import com.chongdong.financialmanagementsystem.model.SearchModel;
 import com.chongdong.financialmanagementsystem.service.SaleService;
+import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/sale")
@@ -46,5 +52,17 @@ public class SaleController {
     @GetMapping("/count")
     public ResponseMap countSale(){
         return saleService.countSale();
+    }
+
+    @GetMapping("/download/{page}/{size}")
+    public void download(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"报销列表");
+        EasyExcel.write(response.getOutputStream(), Sale.class).sheet("报销列表").doWrite(saleService.exportList(page, size));
+    }
+
+    @PostMapping("/search/download")
+    public void downloadSearch(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
+        ExcelUtil.setExcelHeader(response,"报销列表");
+        EasyExcel.write(response.getOutputStream(), Sale.class).sheet("报销列表").doWrite(saleService.searchList(searchModel));
     }
 }

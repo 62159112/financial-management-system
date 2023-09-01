@@ -1,10 +1,9 @@
 package com.chongdong.financialmanagementsystem.service;
 
-import com.chongdong.financialmanagementsystem.model.Reimbursement;
-import com.chongdong.financialmanagementsystem.model.ResponseMap;
-import com.chongdong.financialmanagementsystem.model.Sale;
+import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.chongdong.financialmanagementsystem.model.SearchModel;
+
+import java.util.List;
 
 /**
 * @author cd
@@ -29,4 +28,8 @@ public interface SaleService extends IService<Sale> {
     Boolean deleteWithIncome(Sale sale);
 
     ResponseMap countSale();
+
+    List<Sale> exportList(Integer page, Integer size);
+
+    List<Sale> searchList(SearchModel searchModel);
 }

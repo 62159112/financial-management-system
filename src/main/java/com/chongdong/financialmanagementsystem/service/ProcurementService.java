@@ -4,6 +4,8 @@ import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chongdong.financialmanagementsystem.model.Procurement;
 
+import java.util.List;
+
 /**
 * @author cd
 * @description 针对表【tcd_procurement(采购条目)】的数据库操作Service
@@ -27,4 +29,8 @@ public interface ProcurementService extends IService<Procurement> {
     Boolean deleteWithPayment(Procurement procurement);
 
     ResponseMap countProcurement();
+
+    List<Procurement> exportList(Integer page, Integer size);
+
+    List<Procurement> searchList(SearchModel searchModel);
 }

@@ -3,6 +3,8 @@ package com.chongdong.financialmanagementsystem.service;
 import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author cd
 * @description 针对表【tcd_operate(运营成本条目)】的数据库操作Service
@@ -26,4 +28,8 @@ public interface OperateService extends IService<Operate> {
     Boolean deleteWithPayment(Operate operate);
 
     ResponseMap countOperate();
+
+    List<Operate> exportList(Integer page, Integer size);
+
+    List<Operate> searchList(SearchModel searchModel);
 }

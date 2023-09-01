@@ -95,9 +95,7 @@ public class IPurchaseService extends ServiceImpl<PurchaseMapper, Purchase>
 
     @Override
     public ResponseMap searchPurchase(SearchModel searchModel) {
-        Page<Purchase> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperLike(searchModel.getSearch()));
-        Page<Purchase> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Purchase> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -123,6 +121,17 @@ public class IPurchaseService extends ServiceImpl<PurchaseMapper, Purchase>
             count = count.add(purchase.getAmount());
         }
         return responseMapUtil.countList(count);
+    }
+
+    @Override
+    public List<Purchase> exportList(Integer page, Integer size) {
+        return this.page(pageUtil.getModelPage(page, size)).getRecords();
+    }
+
+    @Override
+    public List<Purchase> searchList(SearchModel searchModel) {
+        Page<Purchase> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
+        return pageList.getRecords();
     }
 }
 

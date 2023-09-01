@@ -81,9 +81,7 @@ public class IExpensesService extends ServiceImpl<ExpensesMapper, Expenses>
 
     @Override
     public ResponseMap searchExpenses(SearchModel searchModel) {
-        Page<Expenses> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperLike(searchModel.getSearch()));
-        Page<Expenses> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Expenses> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -108,6 +106,19 @@ public class IExpensesService extends ServiceImpl<ExpensesMapper, Expenses>
             count = count.add(expenses.getAmount());
         }
         return responseMapUtil.countList(count);
+    }
+
+    @Override
+    public List<Expenses> exportList(Integer page, Integer size) {
+        return this.page(pageUtil.getModelPage(page, size)).getRecords();
+    }
+
+    @Override
+    public List<Expenses> searchList(SearchModel searchModel) {
+        Page<Expenses> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Expenses> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        return pageList.getRecords();
     }
 }
 

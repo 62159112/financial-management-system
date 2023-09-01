@@ -81,9 +81,7 @@ public class ILaborService extends ServiceImpl<LaborMapper, Labor>
 
     @Override
     public ResponseMap searchLabor(SearchModel searchModel) {
-        Page<Labor> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperLike(searchModel.getSearch()));
-        Page<Labor> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Labor> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -109,6 +107,19 @@ public class ILaborService extends ServiceImpl<LaborMapper, Labor>
             count = count.add(labor.getAmount());
         }
         return responseMapUtil.countList(count);
+    }
+
+    @Override
+    public List<Labor> exportList(Integer page, Integer size) {
+        return this.page(pageUtil.getModelPage(page, size)).getRecords();
+    }
+
+    @Override
+    public List<Labor> searchList(SearchModel searchModel) {
+        Page<Labor> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Labor> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        return pageList.getRecords();
     }
 }
 

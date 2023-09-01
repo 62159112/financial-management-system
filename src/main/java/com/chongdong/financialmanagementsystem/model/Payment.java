@@ -36,19 +36,21 @@ public class Payment implements Serializable {
      * 支出名称
      */
     @ExcelProperty("支出名称")
-    @ColumnWidth(50)
+    @ColumnWidth(35)
     private String name;
 
     /**
      * 支出类别
      */
     @ExcelProperty("支出类别")
+    @ColumnWidth(25)
     private String type;
 
     /**
      * 支出金额
      */
     @ExcelProperty("支出金额")
+    @ColumnWidth(25)
     private BigDecimal amount;
 
     /**
@@ -56,13 +58,14 @@ public class Payment implements Serializable {
      */
     @ExcelProperty("支出时间")
     @DateTimeFormat("yyyy-MM-dd")
-    @ColumnWidth(50)
+    @ColumnWidth(30)
     private Date createTime;
 
     /**
      * 负责人
      */
     @ExcelProperty("负责人")
+    @ColumnWidth(30)
     private String director;
 
     @TableField(exist = false)

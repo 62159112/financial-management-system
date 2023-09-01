@@ -95,9 +95,7 @@ public class IProcurementService extends ServiceImpl<ProcurementMapper, Procurem
 
     @Override
     public ResponseMap searchProcurement(SearchModel searchModel) {
-        Page<Procurement> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperLike(searchModel.getSearch()));
-        Page<Procurement> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Procurement> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -123,6 +121,19 @@ public class IProcurementService extends ServiceImpl<ProcurementMapper, Procurem
             count = count.add(procurement.getAmount());
         }
         return responseMapUtil.countList(count);
+    }
+
+    @Override
+    public List<Procurement> exportList(Integer page, Integer size) {
+        return this.page(pageUtil.getModelPage(page, size)).getRecords();
+    }
+
+    @Override
+    public List<Procurement> searchList(SearchModel searchModel) {
+        Page<Procurement> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Procurement> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        return pageList.getRecords();
     }
 }
 

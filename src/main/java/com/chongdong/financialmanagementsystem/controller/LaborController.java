@@ -1,11 +1,17 @@
 package com.chongdong.financialmanagementsystem.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.chongdong.financialmanagementsystem.model.Labor;
+import com.chongdong.financialmanagementsystem.model.Operate;
 import com.chongdong.financialmanagementsystem.model.ResponseMap;
 import com.chongdong.financialmanagementsystem.model.SearchModel;
 import com.chongdong.financialmanagementsystem.service.LaborService;
+import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/labor")
@@ -45,5 +51,17 @@ public class LaborController {
     @GetMapping("/count")
     public ResponseMap countLabor(){
         return laborService.countLabor();
+    }
+
+    @GetMapping("/download/{page}/{size}")
+    public void download(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"人工成本列表");
+        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("人工成本列表").doWrite(laborService.exportList(page, size));
+    }
+
+    @PostMapping("/search/download")
+    public void downloadSearch(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
+        ExcelUtil.setExcelHeader(response,"人工成本列表");
+        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("人工成本列表").doWrite(laborService.searchList(searchModel));
     }
 }

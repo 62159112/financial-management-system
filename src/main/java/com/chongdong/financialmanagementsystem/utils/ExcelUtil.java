@@ -21,11 +21,10 @@ public class ExcelUtil {
      * @throws UnsupportedEncodingException
      */
     public static void setExcelHeader(HttpServletResponse response, String rawFileName) throws UnsupportedEncodingException {
-//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setContentType("application/vnd.ms-excel");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("UTF-8");
         String fileName = URLEncoder.encode(rawFileName, "UTF-8").replaceAll("\\+", "%20");
-        response.setHeader("Content-disposition", "attachment;filename" + fileName + ".xlsx");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
     }
 
 

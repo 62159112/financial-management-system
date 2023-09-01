@@ -1,10 +1,9 @@
 package com.chongdong.financialmanagementsystem.service;
 
-import com.chongdong.financialmanagementsystem.model.Income;
+import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.chongdong.financialmanagementsystem.model.Payment;
-import com.chongdong.financialmanagementsystem.model.ResponseMap;
-import com.chongdong.financialmanagementsystem.model.SearchModel;
+
+import java.util.List;
 
 /**
 * @author cd
@@ -31,4 +30,8 @@ public interface IncomeService extends IService<Income> {
     ResponseMap searchIncome(SearchModel searchModel);
 
     ResponseMap countIncome();
+
+    List<Income> exportList(Integer page, Integer size);
+
+    List<Income> searchList(SearchModel searchModel);
 }

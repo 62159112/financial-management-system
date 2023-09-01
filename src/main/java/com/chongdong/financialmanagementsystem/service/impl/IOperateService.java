@@ -81,9 +81,7 @@ public class  IOperateService extends ServiceImpl<OperateMapper, Operate>
 
     @Override
     public ResponseMap searchOperate(SearchModel searchModel) {
-        Page<Operate> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperLike(searchModel.getSearch()));
-        Page<Operate> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Operate> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -109,6 +107,19 @@ public class  IOperateService extends ServiceImpl<OperateMapper, Operate>
             count = count.add(operate.getAmount());
         }
         return responseMapUtil.countList(count);
+    }
+
+    @Override
+    public List<Operate> exportList(Integer page, Integer size) {
+        return this.page(pageUtil.getModelPage(page, size)).getRecords();
+    }
+
+    @Override
+    public List<Operate> searchList(SearchModel searchModel) {
+        Page<Operate> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Operate> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        return pageList.getRecords();
     }
 }
 

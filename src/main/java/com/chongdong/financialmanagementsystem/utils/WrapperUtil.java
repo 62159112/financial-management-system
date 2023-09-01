@@ -22,17 +22,14 @@ public class WrapperUtil<T> {
      * 搜索通用
      * */
     public QueryWrapper<T> wrapperNormal(String search, String startTime, String endTime) {
+        String start = startTime.contains("/") ? startTime.replaceAll("/", "-") : startTime;
+        String end = endTime.contains("/") ? endTime.replaceAll("/", "-") : endTime;
         QueryWrapper<T> wrapper = new QueryWrapper<>();
-        wrapper.apply("UNIX_TIMESTAMP(create_time) >= UNIX_TIMESTAMP('" +startTime  + "')");
-        wrapper.apply("UNIX_TIMESTAMP(create_time) <= UNIX_TIMESTAMP('" +endTime  + "')");
-        wrapper.like(StringUtils.hasLength(search), "name", search)
+        wrapper.apply("UNIX_TIMESTAMP(create_time) >= UNIX_TIMESTAMP('" + start + "')");
+        wrapper.apply("UNIX_TIMESTAMP(create_time) <= UNIX_TIMESTAMP('" + end + "')").and(QueryWrapper->QueryWrapper.like(StringUtils.hasLength(search), "name", search)
                 .or().like(StringUtils.hasLength(search), "type", search)
                 .or().like(StringUtils.hasLength(search), "amount", search)
-                .or().like(StringUtils.hasLength(search), "director", search);
-        if (StringUtils.hasLength(startTime) && StringUtils.hasLength(endTime)){
-            LocalDateTime start = LocalDateTime.parse(startTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        }
+                .or().like(StringUtils.hasLength(search), "director", search));
         wrapper.orderByDesc("create_time");
         return wrapper;
     }
@@ -130,8 +127,8 @@ public class WrapperUtil<T> {
     /**
      * 费用支出搜索使用
      * */
-    public QueryWrapper<T> wrapperExpenses(String search, String startTime, String endTime){
-        QueryWrapper<T> wrapper = wrapperNormal(search, startTime, endTime);
+    public QueryWrapper<T> wrapperExpenses(String search){
+        QueryWrapper<T> wrapper = wrapperLike(search);
         wrapper.or().like(StringUtils.hasLength(search), "address", search);
         return wrapper;
     }
@@ -147,8 +144,8 @@ public class WrapperUtil<T> {
     /**
      * 采购条目搜索使用
      * */
-    public QueryWrapper<T> wrapperProcurement(String search, String startTime, String endTime){
-        QueryWrapper<T> wrapper = wrapperNormal(search, startTime, endTime);
+    public QueryWrapper<T> wrapperProcurement(String search){
+        QueryWrapper<T> wrapper = wrapperLike(search);
         wrapper.or().like(StringUtils.hasLength(search), "quantity", search);
         return wrapper;
     }

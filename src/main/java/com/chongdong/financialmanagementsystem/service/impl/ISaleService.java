@@ -82,9 +82,7 @@ public class ISaleService extends ServiceImpl<SaleMapper, Sale>
 
     @Override
     public ResponseMap searchSale(SearchModel searchModel) {
-        Page<Sale> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperLike(searchModel.getSearch()));
-        Page<Sale> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        Page<Sale> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -110,6 +108,17 @@ public class ISaleService extends ServiceImpl<SaleMapper, Sale>
             count = count.add(sale.getAmount());
         }
         return responseMapUtil.countList(count);
+    }
+
+    @Override
+    public List<Sale> exportList(Integer page, Integer size) {
+        return this.page(pageUtil.getModelPage(page, size)).getRecords();
+    }
+
+    @Override
+    public List<Sale> searchList(SearchModel searchModel) {
+        Page<Sale> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
+        return pageList.getRecords();
     }
 }
 

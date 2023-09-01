@@ -1,11 +1,14 @@
 package com.chongdong.financialmanagementsystem.controller;
 
-import com.chongdong.financialmanagementsystem.model.Purchase;
-import com.chongdong.financialmanagementsystem.model.ResponseMap;
-import com.chongdong.financialmanagementsystem.model.SearchModel;
+import com.alibaba.excel.EasyExcel;
+import com.chongdong.financialmanagementsystem.model.*;
 import com.chongdong.financialmanagementsystem.service.PurchaseService;
+import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/purchase")
@@ -45,5 +48,17 @@ public class PurchaseController {
     @GetMapping("/count")
     public ResponseMap countPurchase(){
         return purchaseService.countPurchase();
+    }
+
+    @GetMapping("/download/{page}/{size}")
+    public void download(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"购置列表");
+        EasyExcel.write(response.getOutputStream(), Purchase.class).sheet("购置列表").doWrite(purchaseService.exportList(page, size));
+    }
+
+    @PostMapping("/search/download")
+    public void downloadSearch(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
+        ExcelUtil.setExcelHeader(response,"购置列表");
+        EasyExcel.write(response.getOutputStream(), Purchase.class).sheet("购置列表").doWrite(purchaseService.searchList(searchModel));
     }
 }

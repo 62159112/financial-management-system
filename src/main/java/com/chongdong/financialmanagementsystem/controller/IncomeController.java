@@ -1,13 +1,15 @@
 package com.chongdong.financialmanagementsystem.controller;
 
-import com.chongdong.financialmanagementsystem.model.Income;
-import com.chongdong.financialmanagementsystem.model.Payment;
-import com.chongdong.financialmanagementsystem.model.ResponseMap;
-import com.chongdong.financialmanagementsystem.model.SearchModel;
+import com.alibaba.excel.EasyExcel;
+import com.chongdong.financialmanagementsystem.model.*;
 import com.chongdong.financialmanagementsystem.service.IncomeService;
+import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import com.chongdong.financialmanagementsystem.utils.IncomeUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/income")
@@ -48,5 +50,17 @@ public class IncomeController {
     @GetMapping("/count")
     public ResponseMap countIncome(){
         return incomeService.countIncome();
+    }
+
+    @GetMapping("/download/{page}/{size}")
+    public void download(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"收入列表");
+        EasyExcel.write(response.getOutputStream(), Income.class).sheet("收入列表").doWrite(incomeService.exportList(page, size));
+    }
+
+    @PostMapping("/search/download")
+    public void downloadSearch(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
+        ExcelUtil.setExcelHeader(response,"收入列表");
+        EasyExcel.write(response.getOutputStream(), Income.class).sheet("收入列表").doWrite(incomeService.searchList(searchModel));
     }
 }
