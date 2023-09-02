@@ -3,6 +3,8 @@ package com.chongdong.financialmanagementsystem.mapper;
 import com.chongdong.financialmanagementsystem.model.Inventory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
 * @author cd
 * @description 针对表【tcd_inventory(库存条目)】的数据库操作Mapper
@@ -10,6 +12,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.chongdong.financialmanagementsystem.model.Inventory
 */
 public interface InventoryMapper extends BaseMapper<Inventory> {
+
+    List<Inventory> AllInventoryLimit(int offset,int limit);
 
 }
 

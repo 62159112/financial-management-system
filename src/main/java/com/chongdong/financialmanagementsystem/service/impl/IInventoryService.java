@@ -13,6 +13,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -98,16 +99,18 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
 
     @Override
     public ResponseMap listInventory(Integer page, Integer size) {
-        Page<Inventory> pageList = this.page(pageUtil.getModelPage(page, size),wrapperUtil.wrapperTimeDesc());
-        Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
+        Page<Inventory> pageList = this.page(pageUtil.getModelPage(page, size), wrapperUtil.wrapperTimeDescOne());
+        Map<String,Object> modelMap=pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
 
+
+
     @Override
     public ResponseMap searchInventory(SearchModel searchModel) {
-        Page<Inventory> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-        wrapperUtil.wrapperNormal11(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
-        Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
+        Page<Inventory> searchList=this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperLikeInventory(searchModel.getSearch()));
+        Page<Inventory> pageList=this.page(searchList,wrapperUtil.wrapperTimeSlotOne(searchModel.getStartTime(),searchModel.getEndTime()));
+        Map<String,Object> modelMap=pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
 

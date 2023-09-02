@@ -18,6 +18,13 @@ public class WrapperUtil<T> {
         wrapper.orderByDesc("create_time");
         return wrapper;
     }
+
+    public QueryWrapper<T> wrapperTimeDescOne(){
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("update_time");
+        return wrapper;
+    }
+
     /**
      * 搜索通用
      * */
@@ -44,6 +51,16 @@ public class WrapperUtil<T> {
                 .or().like(StringUtils.hasLength(search), "director", search);
         return wrapper;
     }
+
+    public QueryWrapper<T> wrapperLikeInventory(String search){
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        wrapper.like(StringUtils.hasLength(search), "name", search)
+                .or().like(StringUtils.hasLength(search), "type", search)
+                .or().like(StringUtils.hasLength(search), "total", search)
+                .or().like(StringUtils.hasLength(search), "director", search);
+        return wrapper;
+    }
+
     public QueryWrapper<T> wrapperTimeSlot( String startTime, String endTime){
         String start = startTime.contains("/") ? startTime.replaceAll("/", "-") : startTime;
         String end = endTime.contains("/") ? endTime.replaceAll("/", "-") : endTime;
@@ -53,6 +70,17 @@ public class WrapperUtil<T> {
         wrapper.orderByDesc("create_time");
         return wrapper;
     }
+
+    public QueryWrapper<T> wrapperTimeSlotOne( String startTime, String endTime){
+        String start = startTime.contains("/") ? startTime.replaceAll("/", "-") : startTime;
+        String end = endTime.contains("/") ? endTime.replaceAll("/", "-") : endTime;
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        wrapper.apply("UNIX_TIMESTAMP(update_time) >= UNIX_TIMESTAMP('" + start + "')");
+        wrapper.apply("UNIX_TIMESTAMP(update_time) <= UNIX_TIMESTAMP('" + end + "')");
+        wrapper.orderByDesc("update_time");
+        return wrapper;
+    }
+
     public QueryWrapper<T> wrapperNormal11(String search, String startTime, String endTime) {
         QueryWrapper<T> wrapper = new QueryWrapper<>();
         if (StringUtils.hasLength(startTime) && StringUtils.hasLength(endTime)){

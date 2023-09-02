@@ -1,10 +1,6 @@
 package com.chongdong.financialmanagementsystem.controller;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.support.ExcelTypeEnum;
-import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
-import com.alibaba.excel.write.metadata.WriteSheet;
+
 import com.chongdong.financialmanagementsystem.model.Payment;
 import com.chongdong.financialmanagementsystem.model.ResponseMap;
 import com.chongdong.financialmanagementsystem.model.SearchModel;
@@ -78,7 +74,7 @@ public class PaymentController {
 //        EasyExcel.write(outputStream).head(Payment.class).excelType(ExcelTypeEnum.XLSX).sheet("用户列表").doWrite(paymentService.exportList(1, 10));
 //    }
 
-    @GetMapping("/download")
+    /*@GetMapping("/download")
     public void download(HttpServletResponse response) throws IOException {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -87,5 +83,5 @@ public class PaymentController {
         String fileName=URLEncoder.encode("测试","UTF-8").replaceAll("\\+","%20");
         response.setHeader("Content-disposition","attachment;filename*=utf-8''"+fileName+".xlsx");
         EasyExcel.write(response.getOutputStream(),Payment.class).sheet("模板").doWrite(paymentService.exportList(1, 10));
-    }
+    }*/
 }
