@@ -3,6 +3,8 @@ package com.chongdong.financialmanagementsystem.service;
 import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author cd
 * @description 针对表【tcd_inventory(库存条目)】的数据库操作Service

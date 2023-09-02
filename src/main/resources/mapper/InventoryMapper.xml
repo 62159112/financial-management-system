@@ -19,4 +19,7 @@
         total,used_quantity,update_time,
         director
     </sql>
+    <select id="AllInventoryLimit" resultMap="BaseResultMap">
+
+    </select>
 </mapper>
