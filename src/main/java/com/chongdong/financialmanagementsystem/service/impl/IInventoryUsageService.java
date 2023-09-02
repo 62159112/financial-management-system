@@ -40,7 +40,7 @@ public class IInventoryUsageService extends ServiceImpl<InventoryUsageMapper, In
     @Override
     public ResponseMap searchInventoryUsage(SearchModel searchModel) {
         Page<InventoryUsage> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperNormal(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+                wrapperUtil.wrapperNormal77(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -54,7 +54,7 @@ public class IInventoryUsageService extends ServiceImpl<InventoryUsageMapper, In
             return responseMap;
         }
         Page<InventoryUsage> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperNormal(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+                wrapperUtil.wrapperNormal77(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }
@@ -62,7 +62,7 @@ public class IInventoryUsageService extends ServiceImpl<InventoryUsageMapper, In
     @Override
     public ResponseMap searchOneInventoryUsageList(SearchModel searchModel) {
         Page<InventoryUsage> pageList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
-                wrapperUtil.wrapperNormal(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
+                wrapperUtil.wrapperNormal77(searchModel.getSearch(), searchModel.getStartTime(), searchModel.getEndTime()));
         Map<String, Object> modelMap = pageUtil.getModelMap(pageList);
         return responseMapUtil.getPageList(pageList,modelMap);
     }

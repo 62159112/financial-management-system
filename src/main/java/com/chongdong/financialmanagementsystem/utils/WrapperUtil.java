@@ -49,6 +49,52 @@ public class WrapperUtil<T> {
         wrapper.orderByDesc("create_time");
         return wrapper;
     }
+
+    public QueryWrapper<T> wrapperNormal66(String search, String startTime, String endTime) {
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        String start = null;
+        String end = null;
+        if (startTime!=null  && !startTime.equals("") && endTime!=null && !endTime.equals("")){
+            start = startTime.contains("/") ? startTime.replaceAll("/", "-") : startTime;
+            end = endTime.contains("/") ? endTime.replaceAll("/", "-") : endTime;
+
+        }
+        wrapper.apply(start!=null,"UNIX_TIMESTAMP(update_time) >= UNIX_TIMESTAMP('" + start + "')");
+        wrapper.apply(end!=null,"UNIX_TIMESTAMP(update_time) <= UNIX_TIMESTAMP('" + end + "')");
+        if (search != null && !search.equals("")) {
+            wrapper.and(QueryWrapper->QueryWrapper.like( "name", search)
+                    .or().like("type", search)
+                    .or().like( "total", search)
+                    .or().like("director", search));
+        }
+
+        wrapper.orderByDesc("update_time");
+        return wrapper;
+    }
+
+    public QueryWrapper<T> wrapperNormal77(String search, String startTime, String endTime) {
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        String start = null;
+        String end = null;
+        if (startTime!=null  && !startTime.equals("") && endTime!=null && !endTime.equals("")){
+            start = startTime.contains("/") ? startTime.replaceAll("/", "-") : startTime;
+            end = endTime.contains("/") ? endTime.replaceAll("/", "-") : endTime;
+
+        }
+        wrapper.apply(start!=null,"UNIX_TIMESTAMP(create_time) >= UNIX_TIMESTAMP('" + start + "')");
+        wrapper.apply(end!=null,"UNIX_TIMESTAMP(create_time) <= UNIX_TIMESTAMP('" + end + "')");
+        if (search != null && !search.equals("")) {
+            wrapper.and(QueryWrapper->QueryWrapper.like( "user", search)
+                    .or().like("quantity", search)
+                    .or().like( "remark", search)
+                    .or().like("article", search));
+        }
+
+        wrapper.orderByDesc("create_time");
+        return wrapper;
+    }
+
+
     public QueryWrapper<T> wrapperLike(String search){
         QueryWrapper<T> wrapper = new QueryWrapper<>();
         wrapper.like(StringUtils.hasLength(search), "name", search)
