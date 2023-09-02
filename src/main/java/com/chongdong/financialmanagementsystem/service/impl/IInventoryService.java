@@ -108,10 +108,10 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
 
     @Override
     public ResponseMap searchInventory(SearchModel searchModel) {
-        Page<Inventory> searchList=this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),wrapperUtil.wrapperLikeInventory(searchModel.getSearch()));
-        Page<Inventory> pageList=this.page(searchList,wrapperUtil.wrapperTimeSlotOne(searchModel.getStartTime(),searchModel.getEndTime()));
-        Map<String,Object> modelMap=pageUtil.getModelMap(pageList);
-        return responseMapUtil.getPageList(pageList,modelMap);
+        Page<Inventory> searchList=this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),
+                wrapperUtil.wrapperNormal(searchModel.getSearch(),searchModel.getStartTime(),searchModel.getEndTime()));
+        Map<String,Object> modelMap=pageUtil.getModelMap(searchList);
+        return responseMapUtil.getPageList(searchList,modelMap);
     }
 
     @Override
