@@ -22,11 +22,17 @@ public class WrapperUtil<T> {
      * 搜索通用
      * */
     public QueryWrapper<T> wrapperNormal(String search, String startTime, String endTime) {
-        String start = startTime.contains("/") ? startTime.replaceAll("/", "-") : startTime;
-        String end = endTime.contains("/") ? endTime.replaceAll("/", "-") : endTime;
+
+        String start = null;
+        String end = null;
+        if (startTime!=null && endTime!=null){
+            start = startTime.contains("/") ? startTime.replaceAll("/", "-") : startTime;
+            end = endTime.contains("/") ? endTime.replaceAll("/", "-") : endTime;
+        }
         QueryWrapper<T> wrapper = new QueryWrapper<>();
-        wrapper.apply("UNIX_TIMESTAMP(create_time) >= UNIX_TIMESTAMP('" + start + "')");
-        wrapper.apply("UNIX_TIMESTAMP(create_time) <= UNIX_TIMESTAMP('" + end + "')").and(QueryWrapper->QueryWrapper.like(StringUtils.hasLength(search), "name", search)
+        wrapper.apply(start!=null,"UNIX_TIMESTAMP(create_time) >= UNIX_TIMESTAMP('" + start + "')");
+        wrapper.apply(end!=null,"UNIX_TIMESTAMP(create_time) <= UNIX_TIMESTAMP('" + end + "')")
+                .and(QueryWrapper->QueryWrapper.like(StringUtils.hasLength(search), "name", search)
                 .or().like(StringUtils.hasLength(search), "type", search)
                 .or().like(StringUtils.hasLength(search), "amount", search)
                 .or().like(StringUtils.hasLength(search), "director", search));
