@@ -31,4 +31,10 @@ public interface InventoryService extends IService<Inventory> {
     Boolean deleteOtherWithInventory(Inventory inventory);
 
     ResponseMap Outbound(Outbound outbound);
+
+    List<Inventory> exportList(Integer page, Integer size);
+
+    List<Inventory> searchList(SearchModel searchModel);
+
+
 }

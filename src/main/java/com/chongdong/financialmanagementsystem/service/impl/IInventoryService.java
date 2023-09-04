@@ -114,8 +114,6 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
         return responseMapUtil.getPageList(pageList,modelMap);
     }
 
-
-
     @Override
     public ResponseMap searchInventory(SearchModel searchModel) {
         Page<Inventory> searchList=this.page(pageUtil.getModelPage(searchModel.getPage(),searchModel.getSize()),
@@ -181,6 +179,22 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
         }
         return responseMap;
     }
+
+    @Override
+    public List<Inventory> exportList(Integer page, Integer size) {
+        return this.page(pageUtil.getModelPage(page, size)).getRecords();
+    }
+
+    @Override
+    public List<Inventory> searchList(SearchModel searchModel) {
+        Page<Inventory> searchList = this.page(pageUtil.getModelPage(searchModel.getPage(), searchModel.getSize()),
+                wrapperUtil.wrapperLike(searchModel.getSearch()));
+        Page<Inventory> pageList = this.page(searchList, wrapperUtil.wrapperTimeSlot(searchModel.getStartTime(), searchModel.getEndTime()));
+        return pageList.getRecords();
+    }
+
+
+
 
 }
 

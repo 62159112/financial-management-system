@@ -1,11 +1,16 @@
 package com.chongdong.financialmanagementsystem.controller;
 
 
+import com.alibaba.excel.EasyExcel;
 import com.chongdong.financialmanagementsystem.model.*;
 import com.chongdong.financialmanagementsystem.service.InventoryService;
 import com.chongdong.financialmanagementsystem.service.InventoryUsageService;
+import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/inventory")
@@ -74,6 +79,20 @@ public class InventoryController {
     public ResponseMap searchOneInventoryUsageList(@RequestBody SearchModel searchModel){
         return inventoryUsageService.searchOneInventoryUsageList(searchModel);
     }
+
+
+    @GetMapping("/download/{page}/{size}")
+    public void download(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"库存物品列表");
+        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("库存物品列表").doWrite(inventoryService.exportList(page, size));
+    }
+
+    @PostMapping("/search/download")
+    public void downloadSearch(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
+        ExcelUtil.setExcelHeader(response,"库存物品列表");
+        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("库存物品列表").doWrite(inventoryService.searchList(searchModel));
+    }
+
 
 
 }
