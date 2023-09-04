@@ -56,6 +56,12 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
     @Override
     public ResponseMap updateInventory(Inventory inventory) {
         inventory.setUpdateTime(new Date());
+        if (inventory.getName()!=null && inventory.getDirector()!=null && inventory.getTotal()>0 && inventory.getType()!=null){
+            responseMap.setFlag(false);
+            responseMap.setData(false);
+            responseMap.setMessage("修改失败，请检查参数是否正确");
+            return responseMap;
+        }
         if (inventoryMapper.updateById(inventory)>0){
             responseMap.setFlag(true);
             responseMap.setData(inventory);
@@ -70,7 +76,11 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
 
     @Override
     public ResponseMap deleteInventory(Integer id) {
-        if (inventoryMapper.deleteById(id)>0){
+        if (id<0){
+            responseMap.setFlag(false);
+            responseMap.setData(false);
+            responseMap.setMessage("删除失败，请检查参数是否正确");
+        } else if (inventoryMapper.deleteById(id)>0){
             responseMap.setFlag(true);
             responseMap.setData(true);
             responseMap.setMessage("删除成功");
@@ -84,7 +94,7 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
 
     @Override
     public ResponseMap getInventory(Integer id) {
-        if (id!=null){
+        if (id!=null && id>0){
             Inventory inventory = inventoryMapper.selectById(id);
             responseMap.setFlag(true);
             responseMap.setData(inventory);
