@@ -1,9 +1,12 @@
 package com.chongdong.financialmanagementsystem.service;
 
+import com.chongdong.financialmanagementsystem.model.Inventory;
 import com.chongdong.financialmanagementsystem.model.InventoryUsage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chongdong.financialmanagementsystem.model.ResponseMap;
 import com.chongdong.financialmanagementsystem.model.SearchModel;
+
+import java.util.List;
 
 /**
 * @author cd
@@ -17,4 +20,10 @@ public interface InventoryUsageService extends IService<InventoryUsage> {
     ResponseMap oneInventoryUsageList(SearchModel searchModel);
 
     ResponseMap searchOneInventoryUsageList(SearchModel searchModel);
+
+    List<InventoryUsage> exportList(Integer page, Integer size);
+
+    List<InventoryUsage> searchList(SearchModel searchModel);
+
+
 }

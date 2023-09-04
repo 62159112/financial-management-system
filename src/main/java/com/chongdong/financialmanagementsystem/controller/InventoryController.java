@@ -62,6 +62,23 @@ public class InventoryController {
         return inventoryService.Outbound(outbound);
     }
 
+    @GetMapping("/download/{page}/{size}")
+    public void download(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"库存物品列表");
+        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("库存物品列表").doWrite(inventoryService.exportList(page, size));
+    }
+
+    @PostMapping("/search/download")
+    public void downloadSearch(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
+        ExcelUtil.setExcelHeader(response,"库存物品列表");
+        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("库存物品列表").doWrite(inventoryService.searchList(searchModel));
+    }
+
+
+
+
+
+
     //库存使用详情模糊查询
     @PostMapping("/inventoryUsageSearch")
     public ResponseMap searchInventoryUsage(@RequestBody SearchModel searchModel){
@@ -80,18 +97,20 @@ public class InventoryController {
         return inventoryUsageService.searchOneInventoryUsageList(searchModel);
     }
 
-
-    @GetMapping("/download/{page}/{size}")
-    public void download(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
-        ExcelUtil.setExcelHeader(response,"库存物品列表");
-        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("库存物品列表").doWrite(inventoryService.exportList(page, size));
+    @GetMapping("/downloadInventoryUsage/{page}/{size}")
+    public void downloadInventoryUsage(@PathVariable Integer page,@PathVariable Integer size, HttpServletResponse response) throws IOException {
+        ExcelUtil.setExcelHeader(response,"库存物品详情列表");
+        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("库存物品详情列表").doWrite(inventoryService.exportList(page, size));
     }
 
-    @PostMapping("/search/download")
-    public void downloadSearch(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
-        ExcelUtil.setExcelHeader(response,"库存物品列表");
-        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("库存物品列表").doWrite(inventoryService.searchList(searchModel));
+    @PostMapping("/searchInventoryUsage/download")
+    public void downloadSearchInventoryUsage(@RequestBody SearchModel searchModel, HttpServletResponse response)throws IOException {
+        ExcelUtil.setExcelHeader(response,"库存物品详情列表");
+        EasyExcel.write(response.getOutputStream(), Labor.class).sheet("库存物品详情列表").doWrite(inventoryService.searchList(searchModel));
     }
+
+
+
 
 
 
