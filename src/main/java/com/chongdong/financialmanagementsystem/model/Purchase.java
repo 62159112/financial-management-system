@@ -16,6 +16,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * 购置条目
@@ -59,6 +60,7 @@ public class Purchase implements Serializable {
     @ExcelProperty("物品金额")
     @ColumnWidth(25)
     @NotNull(message = "金额不能为空" , groups = {AddGroup.class,UpdateGroup.class})
+    @Range(min = 0,max = 9999999,message = "金额要求在{min}-{max}之间" ,groups = {AddGroup.class,UpdateGroup.class})
     private BigDecimal amount;
 
     /**
@@ -67,6 +69,7 @@ public class Purchase implements Serializable {
     @ExcelProperty("购置数量")
     @ColumnWidth(25)
     @NotNull(message = "数量不能为空" , groups = {AddGroup.class,UpdateGroup.class})
+    @Range(min = 0,max = 999,message = "数量要求在{min}-{max}之间" ,groups = {AddGroup.class,UpdateGroup.class})
     private Integer quantity;
 
     /**

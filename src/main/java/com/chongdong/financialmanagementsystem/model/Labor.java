@@ -16,6 +16,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * 人工成本条目
@@ -59,6 +60,7 @@ public class Labor implements Serializable {
     @ExcelProperty("支出总金额")
     @ColumnWidth(25)
     @NotNull(message = "金额不能为空" , groups = {AddGroup.class,UpdateGroup.class})
+    @Range(min = 0,max = 9999999,message = "金额要求在{min}-{max}之间" ,groups = {AddGroup.class,UpdateGroup.class})
     private BigDecimal amount;
 
     /**

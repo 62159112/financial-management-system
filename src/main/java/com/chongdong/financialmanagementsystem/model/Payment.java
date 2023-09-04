@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * 支出条目
@@ -63,6 +64,7 @@ public class Payment implements Serializable {
     @ExcelProperty("支出金额")
     @ColumnWidth(25)
     @NotNull(message = "金额不能为空" , groups = {AddGroup.class,UpdateGroup.class})
+    @Range(min = 0,max = 9999999,message = "金额要求在{min}-{max}之间" ,groups = {AddGroup.class,UpdateGroup.class})
     private BigDecimal amount;
 
     /**
