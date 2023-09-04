@@ -3,6 +3,7 @@ package com.chongdong.financialmanagementsystem.service;
 import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chongdong.financialmanagementsystem.model.Procurement;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ import java.util.List;
 * @createDate 2023-08-05 09:39:20
 */
 public interface ProcurementService extends IService<Procurement> {
-    ResponseMap addProcurement(Procurement procurement);
+    ResponseMap addProcurement(Procurement procurement, BindingResult bindingResult);
 
-    ResponseMap updateProcurement(Procurement procurement);
+    ResponseMap updateProcurement(Procurement procurement, BindingResult bindingResult);
 
     ResponseMap deleteProcurement(Integer id);
 

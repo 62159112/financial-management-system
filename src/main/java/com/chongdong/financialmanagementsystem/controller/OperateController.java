@@ -6,6 +6,8 @@ import com.chongdong.financialmanagementsystem.service.OperateService;
 import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -22,13 +24,13 @@ public class OperateController {
     }
 
     @PostMapping
-    public ResponseMap addOperate(@RequestBody Operate operate){
-        return operateService.addOperate(operate);
+    public ResponseMap addOperate(@Validated({Operate.AddGroup.class})@RequestBody Operate operate, BindingResult bindingResult){
+        return operateService.addOperate(operate,bindingResult);
     }
 
     @PutMapping
-    public ResponseMap updateOperate(@RequestBody Operate operate){
-        return operateService.updateOperate(operate);
+    public ResponseMap updateOperate(@Validated({Operate.UpdateGroup.class})@RequestBody Operate operate, BindingResult bindingResult){
+        return operateService.updateOperate(operate,bindingResult);
     }
 
     @DeleteMapping("/{id}")

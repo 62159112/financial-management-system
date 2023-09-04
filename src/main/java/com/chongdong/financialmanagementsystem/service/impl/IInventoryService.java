@@ -38,9 +38,9 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
 
     @Override
     public ResponseMap addInventory(Inventory inventory) {
-        if (inventory.getName()!=null && inventory.getDirector()!=null){
-            inventory.setUpdateTime(new Date());
-            inventory.setUsedQuantity(0);
+        inventory.setUpdateTime(new Date());
+        inventory.setUsedQuantity(0);
+        if (inventory.getName()!=null && inventory.getDirector()!=null && inventory.getTotal()>0 && inventory.getType()!=null){
             inventoryMapper.insert(inventory);
             responseMap.setFlag(true);
             responseMap.setData(inventory);
@@ -117,7 +117,9 @@ public class IInventoryService extends ServiceImpl<InventoryMapper, Inventory>
     @Override
     public Boolean addOtherWithInventory(Inventory inventory) {
         Inventory oldInventory = this.getOne(wrapperUtil.wrapperName(inventory.getName()));
+        inventory.setUpdateTime(new Date());
         if (oldInventory==null){
+            inventory.setUsedQuantity(0);
             return this.save(inventory);
         }else {
             oldInventory.setTotal(oldInventory.getTotal()+ inventory.getTotal());

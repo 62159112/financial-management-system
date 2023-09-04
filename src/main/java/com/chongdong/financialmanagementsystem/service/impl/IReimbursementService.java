@@ -14,6 +14,7 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,20 +42,30 @@ public class IReimbursementService extends ServiceImpl<ReimbursementMapper, Reim
 
     @Override
     @Transactional
-    public ResponseMap addReimbursement(Reimbursement reimbursement) {
-        reimbursement.setCreateTime(new Date());
-        BeanUtils.copyProperties(reimbursement,payment);
-        payment.setType("报销成本");
-        return responseMapUtil.addEntity(this.save(reimbursement) && paymentService.addOtherWithPayment(payment));
+    public ResponseMap addReimbursement(Reimbursement reimbursement, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            reimbursement.setCreateTime(new Date());
+            BeanUtils.copyProperties(reimbursement,payment);
+            payment.setType("报销成本");
+            return responseMapUtil.addEntity(this.save(reimbursement) && paymentService.addOtherWithPayment(payment));
+        }else {
+            return bindingMap;
+        }
     }
 
     @Override
     @Transactional
-    public ResponseMap updateReimbursement(Reimbursement reimbursement) {
-        BeanUtils.copyProperties(reimbursement,payment);
-        payment.setId(null);
-        payment.setType(null);
-        return responseMapUtil.updateEntity(this.updateById(reimbursement) && paymentService.updateOtherWithPayment(payment));
+    public ResponseMap updateReimbursement(Reimbursement reimbursement, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            BeanUtils.copyProperties(reimbursement,payment);
+            payment.setId(null);
+            payment.setType(null);
+            return responseMapUtil.updateEntity(this.updateById(reimbursement) && paymentService.updateOtherWithPayment(payment));
+        }else {
+            return bindingMap;
+        }
     }
 
     @Override

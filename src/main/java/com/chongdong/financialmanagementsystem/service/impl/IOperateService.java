@@ -14,6 +14,7 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,20 +42,32 @@ public class  IOperateService extends ServiceImpl<OperateMapper, Operate>
 
     @Override
     @Transactional
-    public ResponseMap addOperate(Operate operate) {
-        operate.setCreateTime(new Date());
-        BeanUtils.copyProperties(operate,payment);
-        payment.setType("运营成本");
-        return responseMapUtil.addEntity(this.save(operate) && paymentService.addOtherWithPayment(payment));
+    public ResponseMap addOperate(Operate operate, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            operate.setCreateTime(new Date());
+            BeanUtils.copyProperties(operate,payment);
+            payment.setType("运营成本");
+            return responseMapUtil.addEntity(this.save(operate) && paymentService.addOtherWithPayment(payment));
+        }else {
+            return bindingMap;
+        }
+
     }
 
     @Override
     @Transactional
-    public ResponseMap updateOperate(Operate operate) {
-        BeanUtils.copyProperties(operate,payment);
-        payment.setId(null);
-        payment.setType(null);
-        return responseMapUtil.updateEntity(this.updateById(operate) && paymentService.updateOtherWithPayment(payment));
+    public ResponseMap updateOperate(Operate operate, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            BeanUtils.copyProperties(operate,payment);
+            payment.setId(null);
+            payment.setType(null);
+            return responseMapUtil.updateEntity(this.updateById(operate) && paymentService.updateOtherWithPayment(payment));
+        }else {
+            return bindingMap;
+        }
+
     }
 
     @Override

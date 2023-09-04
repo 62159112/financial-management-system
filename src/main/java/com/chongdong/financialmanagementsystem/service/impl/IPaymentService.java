@@ -14,6 +14,7 @@ import com.chongdong.financialmanagementsystem.utils.WrapperUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -55,9 +56,15 @@ public class IPaymentService extends ServiceImpl<PaymentMapper, Payment>
     }
     //TODO 修改删除根据类型找到相应service（若为其它则不管）  使用事务同时删除
     @Override
-    public ResponseMap addPayment(Payment payment) {
-        payment.setCreateTime(new Date());
-        return responseMapUtil.addEntity(this.save(payment));
+    public ResponseMap addPayment(Payment payment, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            payment.setCreateTime(new Date());
+            return responseMapUtil.addEntity(this.save(payment));
+        }else {
+            return bindingMap;
+        }
+
     }
 
     @Override
@@ -97,6 +104,7 @@ public class IPaymentService extends ServiceImpl<PaymentMapper, Payment>
         List<Payment> paymentList = this.list();
         BigDecimal count = BigDecimal.valueOf(0);
         for (Payment payment : paymentList) {
+            
             count = count.add(payment.getAmount());
         }
         return responseMapUtil.countList(count);

@@ -2,6 +2,7 @@ package com.chongdong.financialmanagementsystem.service;
 
 import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface IncomeService extends IService<Income> {
 
     Boolean deleteOtherWithIncome(Income income);
 
-    ResponseMap addIncome(Income income);
+    ResponseMap addIncome(Income income, BindingResult bindingResult);
 
     ResponseMap updateIncome(Income income);
 

@@ -2,6 +2,7 @@ package com.chongdong.financialmanagementsystem.service;
 
 import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ import java.util.List;
 * @createDate 2023-08-03 15:37:01
 */
 public interface ReimbursementService extends IService<Reimbursement> {
-    ResponseMap addReimbursement(Reimbursement reimbursement);
+    ResponseMap addReimbursement(Reimbursement reimbursement, BindingResult bindingResult);
 
-    ResponseMap updateReimbursement(Reimbursement reimbursement);
+    ResponseMap updateReimbursement(Reimbursement reimbursement, BindingResult bindingResult);
 
     ResponseMap deleteReimbursement(Integer id);
 

@@ -9,6 +9,8 @@ import com.chongdong.financialmanagementsystem.service.ReimbursementService;
 import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -25,13 +27,13 @@ public class ReimbursementController {
     }
 
     @PostMapping
-    public ResponseMap addReimbursement(@RequestBody Reimbursement reimbursement){
-        return reimbursementService.addReimbursement(reimbursement);
+    public ResponseMap addReimbursement(@Validated({Reimbursement.AddGroup.class})@RequestBody Reimbursement reimbursement, BindingResult bindingResult){
+        return reimbursementService.addReimbursement(reimbursement,bindingResult);
     }
 
     @PutMapping
-    public ResponseMap updateReimbursement(@RequestBody Reimbursement reimbursement){
-        return reimbursementService.updateReimbursement(reimbursement);
+    public ResponseMap updateReimbursement(@Validated({Reimbursement.UpdateGroup.class})@RequestBody Reimbursement reimbursement, BindingResult bindingResult){
+        return reimbursementService.updateReimbursement(reimbursement,bindingResult);
     }
 
     @DeleteMapping("/{id}")

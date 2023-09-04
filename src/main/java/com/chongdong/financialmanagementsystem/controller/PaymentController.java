@@ -14,6 +14,8 @@ import com.chongdong.financialmanagementsystem.utils.PaymentUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -40,8 +42,8 @@ public class PaymentController {
         return paymentService.listPayment(page,size);
     }
     @PostMapping
-    public ResponseMap addPayment(@RequestBody Payment payment){
-        return paymentService.addPayment(payment);
+    public ResponseMap addPayment(@Validated({Payment.AddGroup.class})@RequestBody Payment payment, BindingResult bindingResult){
+        return paymentService.addPayment(payment,bindingResult);
     }
     @PostMapping("/search")
     public ResponseMap searchPayment(@RequestBody SearchModel searchModel){

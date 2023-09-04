@@ -9,6 +9,8 @@ import com.chongdong.financialmanagementsystem.service.ExpensesService;
 import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -25,13 +27,13 @@ public class ExpensesController {
     }
 
     @PostMapping
-    public ResponseMap addExpenses(@RequestBody Expenses expenses){
-        return expensesService.addExpenses(expenses);
+    public ResponseMap addExpenses(@Validated({Expenses.AddGroup.class})@RequestBody Expenses expenses , BindingResult bindingResult){
+        return expensesService.addExpenses(expenses,bindingResult);
     }
 
     @PutMapping
-    public ResponseMap updateExpenses(@RequestBody Expenses expenses){
-        return expensesService.updateExpenses(expenses);
+    public ResponseMap updateExpenses(@Validated({Expenses.UpdateGroup.class})@RequestBody Expenses expenses, BindingResult bindingResult){
+        return expensesService.updateExpenses(expenses,bindingResult);
     }
 
     @DeleteMapping("/{id}")

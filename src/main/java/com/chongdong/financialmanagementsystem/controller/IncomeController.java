@@ -7,6 +7,8 @@ import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import com.chongdong.financialmanagementsystem.utils.IncomeUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -29,8 +31,8 @@ public class IncomeController {
         return incomeService.listIncome(page,size);
     }
     @PostMapping
-    public ResponseMap addIncome(@RequestBody Income income){
-        return incomeService.addIncome(income);
+    public ResponseMap addIncome(@Validated({Income.AddGroup.class})@RequestBody Income income, BindingResult bindingResult){
+        return incomeService.addIncome(income,bindingResult);
     }
     @PostMapping("/search")
     public ResponseMap searchIncome(@RequestBody SearchModel searchModel){

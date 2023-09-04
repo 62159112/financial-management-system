@@ -2,6 +2,7 @@ package com.chongdong.financialmanagementsystem.service;
 
 import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ import java.util.List;
 * @createDate 2023-08-03 15:37:03
 */
 public interface SaleService extends IService<Sale> {
-    ResponseMap addSale(Sale sale);
+    ResponseMap addSale(Sale sale, BindingResult bindingResult);
 
-    ResponseMap updateSale(Sale sale);
+    ResponseMap updateSale(Sale sale, BindingResult bindingResult);
 
     ResponseMap deleteSale(Integer id);
 

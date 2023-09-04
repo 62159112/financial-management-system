@@ -2,6 +2,7 @@ package com.chongdong.financialmanagementsystem.service;
 
 import com.chongdong.financialmanagementsystem.model.*;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ import java.util.List;
 * @createDate 2023-08-03 15:36:49
 */
 public interface LaborService extends IService<Labor> {
-    ResponseMap addLabor(Labor labor);
+    ResponseMap addLabor(Labor labor, BindingResult bindingResult);
 
-    ResponseMap updateLabor(Labor labor);
+    ResponseMap updateLabor(Labor labor, BindingResult bindingResult);
 
     ResponseMap deleteLabor(Integer id);
 

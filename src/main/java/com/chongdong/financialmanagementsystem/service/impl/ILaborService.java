@@ -14,6 +14,7 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,20 +42,30 @@ public class ILaborService extends ServiceImpl<LaborMapper, Labor>
 
     @Override
     @Transactional
-    public ResponseMap addLabor(Labor labor) {
-        labor.setCreateTime(new Date());
-        BeanUtils.copyProperties(labor,payment);
-        payment.setType("人工成本");
-        return responseMapUtil.addEntity(this.save(labor) && paymentService.addOtherWithPayment(payment));
+    public ResponseMap addLabor(Labor labor, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            labor.setCreateTime(new Date());
+            BeanUtils.copyProperties(labor,payment);
+            payment.setType("人工成本");
+            return responseMapUtil.addEntity(this.save(labor) && paymentService.addOtherWithPayment(payment));
+        }else {
+            return bindingMap;
+        }
     }
 
     @Override
     @Transactional
-    public ResponseMap updateLabor(Labor labor) {
-        BeanUtils.copyProperties(labor,payment);
-        payment.setId(null);
-        payment.setType(null);
-        return responseMapUtil.updateEntity(this.updateById(labor) && paymentService.updateOtherWithPayment(payment));
+    public ResponseMap updateLabor(Labor labor, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            BeanUtils.copyProperties(labor,payment);
+            payment.setId(null);
+            payment.setType(null);
+            return responseMapUtil.updateEntity(this.updateById(labor) && paymentService.updateOtherWithPayment(payment));
+        }else {
+            return bindingMap;
+        }
     }
 
     @Override

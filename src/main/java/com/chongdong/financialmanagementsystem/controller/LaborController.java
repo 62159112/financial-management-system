@@ -9,6 +9,8 @@ import com.chongdong.financialmanagementsystem.service.LaborService;
 import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -25,13 +27,13 @@ public class LaborController {
     }
 
     @PostMapping
-    public ResponseMap addLabor(@RequestBody Labor labor){
-        return laborService.addLabor(labor);
+    public ResponseMap addLabor(@Validated({Labor.AddGroup.class})@RequestBody Labor labor, BindingResult bindingResult){
+        return laborService.addLabor(labor,bindingResult);
     }
 
     @PutMapping
-    public ResponseMap updateLabor(@RequestBody Labor labor){
-        return laborService.updateLabor(labor);
+    public ResponseMap updateLabor(@Validated({Labor.UpdateGroup.class})@RequestBody Labor labor, BindingResult bindingResult){
+        return laborService.updateLabor(labor,bindingResult);
     }
 
     @DeleteMapping("/{id}")

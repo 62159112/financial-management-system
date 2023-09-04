@@ -15,6 +15,7 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -42,20 +43,30 @@ public class ISaleService extends ServiceImpl<SaleMapper, Sale>
 
     @Override
     @Transactional
-    public ResponseMap addSale(Sale sale) {
-        sale.setCreateTime(new Date());
-        BeanUtils.copyProperties(sale,income);
-        income.setType("销售出账");
-        return responseMapUtil.addEntity(this.save(sale) && incomeService.addOtherWithIncome(income));
+    public ResponseMap addSale(Sale sale, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            sale.setCreateTime(new Date());
+            BeanUtils.copyProperties(sale,income);
+            income.setType("销售出账");
+            return responseMapUtil.addEntity(this.save(sale) && incomeService.addOtherWithIncome(income));
+        }else {
+            return bindingMap;
+        }
     }
 
     @Override
     @Transactional
-    public ResponseMap updateSale(Sale sale) {
-        BeanUtils.copyProperties(sale,income);
-        income.setId(null);
-        income.setType(null);
-        return responseMapUtil.updateEntity(this.updateById(sale) && incomeService.updateOtherWithIncome(income));
+    public ResponseMap updateSale(Sale sale, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            BeanUtils.copyProperties(sale,income);
+            income.setId(null);
+            income.setType(null);
+            return responseMapUtil.updateEntity(this.updateById(sale) && incomeService.updateOtherWithIncome(income));
+        }else {
+            return bindingMap;
+        }
     }
 
     @Override

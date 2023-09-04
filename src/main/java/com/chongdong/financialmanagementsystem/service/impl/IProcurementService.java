@@ -15,6 +15,7 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -45,27 +46,38 @@ public class IProcurementService extends ServiceImpl<ProcurementMapper, Procurem
     Inventory inventory = EntityFactory.createInventory();
     @Override
     @Transactional
-    public ResponseMap addProcurement(Procurement procurement) {
-        procurement.setCreateTime(new Date());
-        BeanUtils.copyProperties(procurement,payment);
-        BeanUtils.copyProperties(procurement,inventory);
-        payment.setType("采购成本");
-        inventory.setTotal(procurement.getQuantity());
-        return responseMapUtil.addEntity(this.save(procurement) && paymentService.addOtherWithPayment(payment)
-                && inventoryService.addOtherWithInventory(inventory));
+    public ResponseMap addProcurement(Procurement procurement, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            procurement.setCreateTime(new Date());
+            BeanUtils.copyProperties(procurement,payment);
+            BeanUtils.copyProperties(procurement,inventory);
+            payment.setType("采购成本");
+            inventory.setTotal(procurement.getQuantity());
+            return responseMapUtil.addEntity(this.save(procurement) && paymentService.addOtherWithPayment(payment)
+                    && inventoryService.addOtherWithInventory(inventory));
+        }else {
+            return bindingMap;
+        }
     }
 
     @Override
     @Transactional
-    public ResponseMap updateProcurement(Procurement procurement) {
-        Procurement oldProcurement = this.getById(procurement.getId());
-        BeanUtils.copyProperties(procurement,payment);
-        payment.setId(null);
-        payment.setType(null);
-        BeanUtils.copyProperties(procurement,inventory);
-        inventory.setTotal(procurement.getQuantity() - oldProcurement.getQuantity());
-        return responseMapUtil.updateEntity(this.updateById(procurement) && paymentService.updateOtherWithPayment(payment)
-                && inventoryService.UpdateOtherWithInventory(inventory));
+    public ResponseMap updateProcurement(Procurement procurement, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            Procurement oldProcurement = this.getById(procurement.getId());
+            BeanUtils.copyProperties(procurement,payment);
+            payment.setId(null);
+            payment.setType(null);
+            BeanUtils.copyProperties(procurement,inventory);
+            inventory.setTotal(procurement.getQuantity() - oldProcurement.getQuantity());
+            return responseMapUtil.updateEntity(this.updateById(procurement) && paymentService.updateOtherWithPayment(payment)
+                    && inventoryService.UpdateOtherWithInventory(inventory));
+        }else {
+            return bindingMap;
+        }
+
     }
 
     @Override

@@ -9,6 +9,8 @@ import com.chongdong.financialmanagementsystem.service.ProcurementService;
 import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -25,13 +27,13 @@ public class ProcurementController {
     }
 
     @PostMapping
-    public ResponseMap addProcurement(@RequestBody Procurement Procurement){
-        return procurementService.addProcurement(Procurement);
+    public ResponseMap addProcurement(@Validated({Procurement.AddGroup.class})@RequestBody Procurement Procurement, BindingResult bindingResult){
+        return procurementService.addProcurement(Procurement,bindingResult);
     }
 
     @PutMapping
-    public ResponseMap updateProcurement(@RequestBody Procurement Procurement){
-        return procurementService.updateProcurement(Procurement);
+    public ResponseMap updateProcurement(@Validated({Procurement.UpdateGroup.class})@RequestBody Procurement Procurement, BindingResult bindingResult){
+        return procurementService.updateProcurement(Procurement,bindingResult);
     }
 
     @DeleteMapping("/{id}")

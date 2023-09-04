@@ -6,6 +6,8 @@ import com.chongdong.financialmanagementsystem.service.PurchaseService;
 import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -22,13 +24,13 @@ public class PurchaseController {
     }
 
     @PostMapping
-    public ResponseMap addPurchase(@RequestBody Purchase purchase){
-        return purchaseService.addPurchase(purchase);
+    public ResponseMap addPurchase(@Validated({Purchase.AddGroup.class})@RequestBody Purchase purchase, BindingResult bindingResult){
+        return purchaseService.addPurchase(purchase,bindingResult);
     }
 
     @PutMapping
-    public ResponseMap updatePurchase(@RequestBody Purchase purchase){
-        return purchaseService.updatePurchase(purchase);
+    public ResponseMap updatePurchase(@Validated({Purchase.UpdateGroup.class})@RequestBody Purchase purchase, BindingResult bindingResult){
+        return purchaseService.updatePurchase(purchase,bindingResult);
     }
 
     @DeleteMapping("/{id}")

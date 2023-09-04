@@ -5,6 +5,7 @@ import com.chongdong.financialmanagementsystem.model.Payment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chongdong.financialmanagementsystem.model.ResponseMap;
 import com.chongdong.financialmanagementsystem.model.SearchModel;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface PaymentService extends IService<Payment> {
 
     Boolean deleteOtherWithPayment(Payment payment);
 
-    ResponseMap addPayment(Payment payment);
+    ResponseMap addPayment(Payment payment, BindingResult bindingResult);
 
     ResponseMap updatePayment(Payment payment);
 

@@ -9,6 +9,8 @@ import com.chongdong.financialmanagementsystem.service.SaleService;
 import com.chongdong.financialmanagementsystem.utils.ExcelUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -25,13 +27,13 @@ public class SaleController {
     }
 
     @PostMapping
-    public ResponseMap addSale(@RequestBody Sale sale){
-        return saleService.addSale(sale);
+    public ResponseMap addSale(@Validated({Sale.AddGroup.class})@RequestBody Sale sale, BindingResult bindingResult){
+        return saleService.addSale(sale,bindingResult);
     }
 
     @PutMapping
-    public ResponseMap updateSale(@RequestBody Sale sale){
-        return saleService.updateSale(sale);
+    public ResponseMap updateSale(@Validated({Sale.UpdateGroup.class})@RequestBody Sale sale, BindingResult bindingResult){
+        return saleService.updateSale(sale,bindingResult);
     }
 
     @DeleteMapping("/{id}")

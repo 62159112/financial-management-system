@@ -14,6 +14,7 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,20 +42,31 @@ public class IExpensesService extends ServiceImpl<ExpensesMapper, Expenses>
 
     @Override
     @Transactional
-    public ResponseMap addExpenses(Expenses expenses) {
-        expenses.setCreateTime(new Date());
-        BeanUtils.copyProperties(expenses,payment);
-        payment.setType("费用成本");
-        return responseMapUtil.addEntity(this.save(expenses) && paymentService.addOtherWithPayment(payment));
+    public ResponseMap addExpenses(Expenses expenses, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            expenses.setCreateTime(new Date());
+            BeanUtils.copyProperties(expenses,payment);
+            payment.setType("费用成本");
+            return responseMapUtil.addEntity(this.save(expenses) && paymentService.addOtherWithPayment(payment));
+        }else {
+            return bindingMap;
+        }
+
     }
 
     @Override
     @Transactional
-    public ResponseMap updateExpenses(Expenses expenses) {
-        BeanUtils.copyProperties(expenses,payment);
-        payment.setId(null);
-        payment.setType(null);
-        return responseMapUtil.updateEntity(this.updateById(expenses) && paymentService.updateOtherWithPayment(payment));
+    public ResponseMap updateExpenses(Expenses expenses, BindingResult bindingResult) {
+        ResponseMap bindingMap = responseMapUtil.getBindingResult(bindingResult);
+        if(bindingMap.getFlag()){
+            BeanUtils.copyProperties(expenses,payment);
+            payment.setId(null);
+            payment.setType(null);
+            return responseMapUtil.updateEntity(this.updateById(expenses) && paymentService.updateOtherWithPayment(payment));
+        }else {
+            return bindingMap;
+        }
     }
 
     @Override
